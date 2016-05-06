@@ -20,7 +20,7 @@
           </thead>
           <tbody>
               {% for participante in pagination %}
-                  <tr>
+                  <tr data-id="{{ participante.id }}">
                       <td>{{participante.name}}</td>
                       <td>{{participante.members}}</td>
                       <td>
@@ -52,4 +52,11 @@
         </div>
       </div>
     </div>
+    {{ include('IAWParticipanteBundle:Participante:forms/form.html.twig', {form : delete_form_ajax, id : 'form-delete', with_submit : false}) }}
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('bundles/iawparticipante/js/deleteParticipante.js') }}"></script>
 {% endblock %}

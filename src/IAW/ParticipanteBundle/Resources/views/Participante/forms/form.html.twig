@@ -1,0 +1,23 @@
+{{ form_start(form, {'attr' : {'id' : id|default('form')}} ) }}
+
+  {{form_widget(form) }}
+
+  {# Muestro el boton eliminar cuando llamo desde el formular view a eliminar#}
+  {% if with_submit is not defined or with_submit == true %}
+  <input type="button" value="Eliminar participante" class="btn btn-lg btn-block btn-danger"
+    onclick="confirmarEliminar()">
+  {% endif %}
+
+{{ form_end(form) }}
+
+<script>
+
+  function confirmarEliminar(){
+    bootbox.confirm("¿Desea eliminar?", function(result){
+      if(result == true){
+        document.form.submit();
+      }
+    });
+  }
+
+</script>

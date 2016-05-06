@@ -15,7 +15,7 @@ class UserController extends Controller
     public function indexAction(Request $request)
     {
       $em = $this->getDoctrine()->getManager();
-      //El primer usuario que aparece en la lista es el ultimo inseemdo.
+      //El primer usuario que aparece en la lista es el ultimo insertado.
       $dql = "SELECT u FROM IAWUserBundle:User u ORDER BY u.id DESC";
       //Ejecuto la consulta
       $users = $em->createQuery($dql);
@@ -256,8 +256,9 @@ class UserController extends Controller
 
     public function updateAction($id, Request $request){
 
-      //Obtengo el usuario con el id indicado
       $em = $this->getDoctrine()->getManager();
+
+      //Obtengo el usuario con el id indicado
       $user = $em->getRepository('IAWUserBundle:User')->find($id);
 
       //Verifico si existe el usuario con el id indicado
@@ -296,7 +297,6 @@ class UserController extends Controller
 
       //En caso de algun problema, renderizo el formulario
       return $this->render('IAWUserBundle:User:edit.html.twig', array('user', 'form' => $form->createView()));
-
     }
 
     /*****************************

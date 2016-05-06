@@ -29,7 +29,7 @@ iaw_participante_view:
     defaults: { _controller: IAWParticipanteBundle:Participante:view }
 
 iaw_participante_delete:
-    path: /participante/delete
+    path: /participante/delete/{id}
     defaults: { _controller: IAWParticipanteBundle:Participante:delete }
 
 # Si se trata ingresar por url directo a /participante/create,

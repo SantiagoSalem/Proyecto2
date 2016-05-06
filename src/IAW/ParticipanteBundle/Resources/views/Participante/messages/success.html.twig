@@ -3,3 +3,12 @@
       <div class="container">{{ flashMessage }}</div>
   </div>
 {% endfor%}
+
+{# Caso Ajax#}
+{% if flashMessage is not defined %}
+    <div class="alert alert-success hidden" id="message" role="alert">
+      <div class="container">
+        <span id="participante-message"></span>
+      </div>
+    </div>
+{% endif %}
