@@ -6,7 +6,11 @@
 		<div class="row">
 	    <div class="col-md-2">
 				<dl>
-					<img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="150px" width="150px" />
+					{% if participante.imagePath != '' %}
+						<img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="150px" width="150px" />
+					{% elseif participante.imagePath == ''%}
+						<img src="{{ asset('uploads/noImage.png') }}" heigth="150px" width="150px" />
+					{% endif %}
 				</dl>
 			</div>
 			<div class="col-md-7">
@@ -30,6 +34,7 @@
 		        	'Editar participante'
 				 </a>
 			</p>
+				{{ include('IAWParticipanteBundle:Participante:forms/form.html.twig', {form: delete_form}) }}
       <p>
       </p>
 	    </div>
@@ -46,45 +51,4 @@
 		</div>
 	</div>
 
-{#
-	    <div class="col-md-9">
-	    <h2{>{{ participante.name }}</h2>
-	        <br>
-	        <dl>
-	            <dt>Nombre</dt>
-	            <dd>
-	                {{ participante.name }}
-	                &nbsp;
-	            </dd>
-	            <br>
-
-	            <dt>Miembros</dt>
-	            <dd>
-                	{{ participante.members }}
-	                &nbsp;
-	            </dd>
-	            <br>
-
-	            <dt>Escudo</dt>
-	            <dd>
-									<img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="65px" width="65px" />
-									&nbsp;
-	            </dd>
-	            <br>
-	        </dl>
-	    </div>
-	    <div class="col-md-3">
-	    	<h3>Acciones</h3>
-			<p>
-		    	<a href="{{ path('iaw_participante_edit', { id: participante.id }) }}" class="btn btn-primary btn-lg btn-block">
-		    		<span class="glyphicon glyphicon-edit"></span>
-		        	'Editar participante'
-				 </a>
-			</p>
-      <p>
-      </p>
-
-	    </div>
-	</div>
-	#}
 {% endblock %}
