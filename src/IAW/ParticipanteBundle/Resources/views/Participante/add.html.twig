@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+      {{ parent() }}
+      <div class="main container">
+        <div class="row well">
+          <div class="col-md-6">
+            <div class="page-header">
+              <h2>Nuevo participante</h2>
+            </div>
+            {{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+
+            <div class="form-group">
+                {{ form_label(form.name, 'Nombre') }}
+                {{ form_widget(form.name,{ 'attr' : {'class' : 'form-control', 'placeholder' : 'Nombre de participante'} }) }}
+                <span class="text-danger"> {{ form_errors(form.name) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.imagePath, 'Escudo') }}
+                {{ form_widget(form.imagePath,{ 'attr' : {'class' : 'form-control'}}) }}
+                <span class="text-danger"> {{ form_errors(form.imagePath) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.descripcion,'Descripcion') }}
+                {{ form_widget(form.descripcion,{ 'attr' : {'class' : 'form-control', 'placeholder' : 'Descripcion del club',
+                      'style' : 'height:110px', 'cols':'40', 'rows' :'5'} }) }}
+                <span class="text-danger"> {{ form_errors(form.descripcion) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.members,'Numero de miembros') }}
+                {{ form_widget(form.members,{ 'attr' : {'class' : 'form-control', 'placeholder' : 'Miembros'} }) }}
+                <span class="text-danger"> {{ form_errors(form.members) }}</span>
+            </div>
+
+
+
+            <p>
+
+              {{ form_widget(form.save, {'label' : 'Crear participante', 'attr': {'class': 'btn btn-success'}})  }}
+            </p>
+
+
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+{% endblock %}

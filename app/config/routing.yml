@@ -1,0 +1,11 @@
+iaw_participante:
+    resource: "@IAWParticipanteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+iaw_user:
+    resource: "@IAWUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation

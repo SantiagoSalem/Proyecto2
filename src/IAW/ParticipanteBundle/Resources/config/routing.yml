@@ -1,0 +1,51 @@
+iaw_participante_homepage:
+    path:     /pa
+    defaults: { _controller: IAWParticipanteBundle:Default:index }
+
+iaw_participante_index:
+    path: /participante/index
+    defaults: { _controller: IAWParticipanteBundle:Participante:index }
+
+iaw_participante_add:
+    path: /participante/add
+    defaults: { _controller: IAWParticipanteBundle:Participante:add }
+
+iaw_participante_create:
+    path: /participante/create
+    defaults: { _controller: IAWParticipanteBundle:Participante:create }
+    methods:  POST
+
+iaw_participante_edit:
+    path: /participante/edit/{id}
+    defaults: { _controller: IAWParticipanteBundle:Participante:edit }
+
+iaw_participante_update:
+    path: /participante/update/{id}
+    defaults: { _controller: IAWParticipanteBundle:Participante:update }
+    methods: [POST, PUT]
+
+iaw_participante_view:
+    path: /participante/view/{id}
+    defaults: { _controller: IAWParticipanteBundle:Participante:view }
+
+iaw_participante_delete:
+    path: /participante/delete
+    defaults: { _controller: IAWParticipanteBundle:Participante:delete }
+
+# Si se trata ingresar por url directo a /participante/create,
+# luego se redirecciona a /participante/add.
+iaw_participante_redirect_add:
+    path: /participante/create
+    defaults:
+        _controller: IAWParticipanteBundle:Participante:add
+        path: /participante/add
+        permanent: true
+
+# Si se trata ingresar por url directo a /participante/update,
+# luego se redirecciona a /participante/edit.
+iaw_participante_redirect_edit:
+    path: /participante/update/{id}
+    defaults:
+        _controller: IAWParticipanteBundle:Participante:edit
+        path: /participante/editar/{id}
+        permanent: true

@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+  {{ parent() }}
+  {{ include('IAWParticipanteBundle:Participante:messages/success.html.twig') }}
+  <div class="container">
+    <div class="col-md-12">
+      <div class="page-header margin-none">
+        <h2 class="padding-none">Participantes</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover" id="tablaAjustada">
+          <thead>
+              <tr>
+                  <th> {{knp_pagination_sortable(pagination, 'Nombre', 'p.name') }}</th>
+                  <th> {{knp_pagination_sortable(pagination, 'Miembros', 'p.members') }}</th>
+                  <th> Escudo</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for participante in pagination %}
+                  <tr>
+                      <td>{{participante.name}}</td>
+                      <td>{{participante.members}}</td>
+                      <td>
+                          {% if participante.imagePath != '' %}
+                              <img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="30px" width="30px" />
+                          {% else %}
+                              <img src="{{ asset('uploads/noImage.png') }}" heigth="30px" width="30px" />
+                          {% endif %}
+                      </td>
+                      <td class="actions">
+                        <a href="{{ path('iaw_participante_view', {id: participante.id}) }}" class="btn btn-sm btn-info">
+                          Ver
+                        </a>
+                        <a href="{{ path('iaw_participante_edit', {id: participante.id}) }}" class="btn btn-sm btn-primary">
+                          Editar
+                        </a>
+                        <a href="#" class="btn btn-sm btn-danger btn-delete">
+                          Eliminar
+                        </a>
+                      </td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {# Lugar que ocupa el indice de paginas #}
+          <div class="navigation">
+              {{ knp_pagination_render(pagination) }}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

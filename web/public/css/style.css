@@ -1,0 +1,34 @@
+#tablaAjustada {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+/* Esto le quita el espacio, pero me pega los formularios
+.navbar {
+    margin-bottom: 0;
+}
+*/
+
+.navbar, .no-border {
+	border-radius: 0 !important;
+	margin-bottom: 0 !important;
+}
+.alert {
+	border-radius: 0 !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.visuallyhidden {
+  opacity: 0;
+}
+
+#message-danger {
+  transition: all 2s linear;
+}
+
+#message {
+  transition: all 2s linear;
+}

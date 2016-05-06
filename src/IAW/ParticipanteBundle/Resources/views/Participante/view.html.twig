@@ -1,0 +1,90 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+	{{ parent() }}
+	<div class="container well">
+		<div class="row">
+	    <div class="col-md-2">
+				<dl>
+					<img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="150px" width="150px" />
+				</dl>
+			</div>
+			<div class="col-md-7">
+				<dl>
+					<dt><h3>Nombre</h3></dt>
+					<dd>
+							{{ participante.name }}
+					</dd>
+
+					<dt><h3>Miembros</h3></dt>
+					<dd>
+							{{ participante.members }}
+					</dd>
+				</dl>
+			</div>
+			<div class="col-md-3">
+	    	<h3>Acciones</h3>
+			<p>
+		    	<a href="{{ path('iaw_participante_edit', { id: participante.id }) }}" class="btn btn-primary btn-lg btn-block">
+		    		<span class="glyphicon glyphicon-edit"></span>
+		        	'Editar participante'
+				 </a>
+			</p>
+      <p>
+      </p>
+	    </div>
+		</div>
+		<div class="row">
+			<div class="col-md-9">
+				<dl>
+					<dt><h3>Descripcion</h3></dt>
+					<dd>
+							{{ participante.descripcion }}
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+
+{#
+	    <div class="col-md-9">
+	    <h2{>{{ participante.name }}</h2>
+	        <br>
+	        <dl>
+	            <dt>Nombre</dt>
+	            <dd>
+	                {{ participante.name }}
+	                &nbsp;
+	            </dd>
+	            <br>
+
+	            <dt>Miembros</dt>
+	            <dd>
+                	{{ participante.members }}
+	                &nbsp;
+	            </dd>
+	            <br>
+
+	            <dt>Escudo</dt>
+	            <dd>
+									<img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="65px" width="65px" />
+									&nbsp;
+	            </dd>
+	            <br>
+	        </dl>
+	    </div>
+	    <div class="col-md-3">
+	    	<h3>Acciones</h3>
+			<p>
+		    	<a href="{{ path('iaw_participante_edit', { id: participante.id }) }}" class="btn btn-primary btn-lg btn-block">
+		    		<span class="glyphicon glyphicon-edit"></span>
+		        	'Editar participante'
+				 </a>
+			</p>
+      <p>
+      </p>
+
+	    </div>
+	</div>
+	#}
+{% endblock %}

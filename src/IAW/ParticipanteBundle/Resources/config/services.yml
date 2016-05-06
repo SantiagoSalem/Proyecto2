@@ -1,0 +1,4 @@
+services:
+#    iaw_participante.example:
+#        class: IAW\ParticipanteBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

@@ -1,0 +1,53 @@
+iaw_user_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: IAWUserBundle:Default:index }
+
+iaw_user_index:
+    path: /user/index
+    defaults: { _controller: IAWUserBundle:User:index }
+
+iaw_user_add:
+    path: /user/add
+    defaults: { _controller: IAWUserBundle:User:add }
+
+iaw_user_create:
+    path: /user/create
+    defaults: { _controller: IAWUserBundle:User:create }
+    methods:  POST
+
+iaw_user_edit:
+    path: /user/edit/{id}
+    defaults: { _controller: IAWUserBundle:User:edit }
+
+iaw_user_update:
+    path: /user/update/{id}
+    defaults: { _controller: IAWUserBundle:User:update }
+    methods: [POST, PUT]
+
+iaw_user_view:
+    path: /user/view/{id}
+    defaults: { _controller: IAWUserBundle:User:view }
+
+iaw_user_delete:
+    path: /user/delete/{id}
+    defaults: { _controller: IAWUserBundle:User:delete }
+    methods: [POST, DELETE]
+
+
+# Si se trata ingresar por url directo a /user/create,
+# luego se redirecciona a /user/add.
+iaw_user_redirect_add:
+    path: /user/create
+    defaults:
+        _controller: IAWUserBundle:User:add
+        path: /user/add
+        permanent: true
+
+# Si se trata ingresar por url directo a /user/update,
+# luego se redirecciona a /user/edit.
+iaw_user_redirect_edit:
+    path: /user/update/{id}
+    defaults:
+        _controller: IAWUserBundle:User:edit
+        path: /user/editar/{id}
+        permanent: true

@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+      {{ parent() }}
+      {{ include('IAWParticipanteBundle:Participante:messages/success.html.twig') }}
+      <div class="main container">
+        <div class="row well">
+          <div class="col-md-6">
+            <div class="page-header">
+              <h2>Editar participante</h2>
+            </div>
+            {{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+              <h4 class="text-danger">{{ form_errors(form)  }} </h4>
+
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name,{ 'attr' : {'class' : 'form-control', 'placeholder' : 'Nombre de participante'} }) }}
+                <span class="text-danger"> {{ form_errors(form.name) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.members) }}
+                {{ form_widget(form.members,{ 'attr' : {'class' : 'form-control', 'placeholder' : 'Miembros'} }) }}
+                <span class="text-danger"> {{ form_errors(form.members) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.imagePath) }}
+                {{ form_widget(form.imagePath,{ 'attr' : {'class' : 'form-control'}}) }}
+                <span class="text-danger"> {{ form_errors(form.imagePath) }}</span>
+            </div>
+
+            <p>
+
+              {{ form_widget(form.save, {'label' : 'Actualizar participante', 'attr': {'class': 'btn btn-success'}})  }}
+            </p>
+
+
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+{% endblock %}
