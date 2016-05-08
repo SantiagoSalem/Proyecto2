@@ -1,7 +1,8 @@
-{% extends 'layout.html.twig' %}
+{% extends 'layout.html.twig'  %}
 
 {% block body %}
 	{{ parent() }}
+	<br />
 	<div class="container well">
 	    <div class="col-md-9">
 	    <h2>{{ user.username }}</h2>
@@ -27,9 +28,9 @@
 
 	            <dt>Activo</dt>
 	            <dd>
-                	{% if user.isActive == 1 %}
+                	{% if user.enabled == 1 %}
 						            <span class="text-success">Habilitado</span>
-					        {% elseif user.isActive == 0 %}
+					        {% elseif user.enabled == 0 %}
 						            <span class="text-warning">Deshabilitado</span>
                 	{% endif %}
 	                &nbsp;

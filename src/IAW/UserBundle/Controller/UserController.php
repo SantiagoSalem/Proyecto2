@@ -22,6 +22,10 @@ class UserController extends Controller
 
       $paginator = $this->get('knp_paginator');
 
+      //Obtengo el usuario logueado
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+
       /*Aplico la paginacion con:
             * la consulta ejecutada,
             * empieza desde la pagina 1,
@@ -34,7 +38,7 @@ class UserController extends Controller
 
       $deleteFormAjax = $this->createCustomForm(':USER_ID', 'DELETE', 'iaw_user_delete');
 
-      return $this->render('IAWUserBundle:User:index.html.twig', array('pagination' => $pagination,
+      return $this->render('IAWUserBundle:User:index.html.twig', array('logInUser' => $logInUser, 'pagination' => $pagination,
           'delete_form_ajax' => $deleteFormAjax->createView()));
     }
 
@@ -47,7 +51,9 @@ class UserController extends Controller
       $user = new User();
       $form = $this->createCreateForm($user);
 
-      return $this->render('IAWUserBundle:User:add.html.twig', array('form' => $form->createView()));
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWUserBundle:User:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
 
     }
 
@@ -93,6 +99,16 @@ class UserController extends Controller
           //El password codificado es el valor del password de la entidad
           $user->setPassword($encoded);
 
+          //Rol indicado en el formulario
+          $role = $form->get('role')->getData();
+
+          //Agrego a roles el rol indicado en el form
+          $user->setRoles(array('role' => $role));
+
+          //Como no nos importa el email, se inserta el nombre del usuario
+          $username = $form->get('username')->getData();
+          $user->setEmail($username."@email.com");
+
           //Guardo en la base de datos
           $em = $this->getDoctrine()->getManager();
           $em->persist($user);
@@ -111,8 +127,9 @@ class UserController extends Controller
           $form->get('password')->addError($mensajeError);
         }
       }
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWUserBundle:User:add.html.twig', array('form' => $form->createView()));
+      return $this->render('IAWUserBundle:User:add.html.twig', array('logInUser' => $logInUser, 'form' => $form->createView()));
     }
 
     /*****************************
@@ -138,7 +155,9 @@ class UserController extends Controller
 
       $deleteForm = $this->createCustomForm($user->getId(), 'DELETE', 'iaw_user_delete');
 
-      return $this->render('IAWUserBundle:User:view.html.twig', array('user' => $user,'delete_form' => $deleteForm->createView()));
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWUserBundle:User:view.html.twig', array('logInUser' => $logInUser,'user' => $user,'delete_form' => $deleteForm->createView()));
 
     }
 
@@ -236,7 +255,9 @@ class UserController extends Controller
 
       $form = $this->createEditForm($user);
 
-      return $this->render('IAWUserBundle:User:edit.html.twig', array('user' => $user,'form' => $form->createView()));
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWUserBundle:User:edit.html.twig', array('logInUser' => $logInUser,'user' => $user,'form' => $form->createView()));
     }
 
     private function createEditForm(User $entidad){
@@ -286,6 +307,21 @@ class UserController extends Controller
           $user->setPassword($passwordBD[0]['password']);
         }
 
+        //Obtengo el role indicado en el form
+        $role = $form->get('role')->getData();
+
+        //Obtengo el roles actual del usuario
+        $roles = $user->getRoles();
+
+        //Elimino el roles actual
+        $user->removeRole($roles[0]);
+
+        //Agrego a roles el role indicado
+        $user->setRoles(array('role' => $role));
+
+
+
+
         //Guardo en la base de datos
         $em->flush();
 
@@ -294,9 +330,10 @@ class UserController extends Controller
 
         return $this->redirectToRoute('iaw_user_edit', array('id' => $user->getId()));
       }
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWUserBundle:User:edit.html.twig', array('user', 'form' => $form->createView()));
+      return $this->render('IAWUserBundle:User:edit.html.twig', array('logInUser' => $logInUser,'user', 'form' => $form->createView()));
     }
 
     /*****************************

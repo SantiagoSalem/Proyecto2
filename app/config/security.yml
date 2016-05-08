@@ -4,11 +4,23 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        fos_userbundle:
+            id: fos_user.user_manager
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
+        main:
+            pattern: ^/
+            form_login:
+                check_path: /login_check
+                login_path: /login
+                provider: fos_userbundle
+                default_target_path: /admin/index
+            logout:
+                path: /logout
+                target: /login
+            anonymous: ~
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -22,7 +34,10 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-            
+
+#    access_control:
+#        - { path: ^/admin, roles: ROLE_ADMIN }
+
     #Utilizado para encriptar la constraseña del usuario
     encoders:
         IAW\UserBundle\Entity\User:

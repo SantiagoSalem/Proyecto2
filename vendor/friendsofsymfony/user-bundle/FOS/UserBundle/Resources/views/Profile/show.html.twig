@@ -1,0 +1,51 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block body %}
+{{ parent() }}
+<br />
+<div class="container well">
+    <div class="col-md-9">
+    <h2 class="title">
+        {{ logInUser.username }}
+        <small>
+            Ultimo login: {{ logInUser.lastLogin|date('M d, Y') }}
+            {%- if is_granted('ROLE_ADMIN') %}
+                <a href="mailto:{{ logInUser.email }}">{{ logInUser.email }}</a>
+            {%- endif %}
+        </small>
+    </h2>
+        <br>
+        <dl>
+            <dt>Usuario</dt>
+            <dd>
+                {{ logInUser.username }}
+                &nbsp;
+            </dd>
+            <br>
+
+            <dt>Rol</dt>
+            <dd>
+                {% if logInUser.role == 'ROLE_ADMIN' %}
+                  Administrador
+                {% elseif logInUser.role == 'ROLE_EDITOR' %}
+                  Editor
+                {% endif %}
+                &nbsp;
+            </dd>
+            <br>
+
+            <dt>Activo</dt>
+            <dd>
+                {% if logInUser.enabled == 1 %}
+                      <span class="text-success">Habilitado</span>
+                {% elseif logInUser.enabled == 0 %}
+                      <span class="text-warning">Deshabilitado</span>
+                {% endif %}
+                &nbsp;
+            </dd>
+            <br>
+        </dl>
+    </div>
+</div>
+{% endblock body %}

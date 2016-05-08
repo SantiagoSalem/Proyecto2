@@ -3,6 +3,7 @@
 {% block body %}
       {{ parent() }}
       {{ include('IAWUserBundle:User:messages/success.html.twig') }}
+      <br />
       <div class="main container">
         <div class="row well">
           <div class="col-md-6">
@@ -32,8 +33,8 @@
 
             <div class="checkbox">
               <label>
-                {{ form_widget(form.isActive) }}Activo
-                <span class="text-danger"> {{ form_errors(form.isActive) }}</span>
+                {{ form_widget(form.enabled) }}Activo
+                <span class="text-danger"> {{ form_errors(form.enabled) }}</span>
               </label>
             </div>
 

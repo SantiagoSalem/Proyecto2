@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new IAW\UserBundle\IAWUserBundle(),
             new IAW\ParticipanteBundle\IAWParticipanteBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

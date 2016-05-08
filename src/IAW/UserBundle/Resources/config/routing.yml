@@ -3,33 +3,33 @@ iaw_user_homepage:
     defaults: { _controller: IAWUserBundle:Default:index }
 
 iaw_user_index:
-    path: /user/index
+    path: /admin/index
     defaults: { _controller: IAWUserBundle:User:index }
 
 iaw_user_add:
-    path: /user/add
+    path: /admin/add
     defaults: { _controller: IAWUserBundle:User:add }
 
 iaw_user_create:
-    path: /user/create
+    path: /admin/create
     defaults: { _controller: IAWUserBundle:User:create }
     methods:  POST
 
 iaw_user_edit:
-    path: /user/edit/{id}
+    path: /admin/edit/{id}
     defaults: { _controller: IAWUserBundle:User:edit }
 
 iaw_user_update:
-    path: /user/update/{id}
+    path: /admin/update/{id}
     defaults: { _controller: IAWUserBundle:User:update }
     methods: [POST, PUT]
 
 iaw_user_view:
-    path: /user/view/{id}
+    path: /admin/view/{id}
     defaults: { _controller: IAWUserBundle:User:view }
 
 iaw_user_delete:
-    path: /user/delete/{id}
+    path: /admin/delete/{id}
     defaults: { _controller: IAWUserBundle:User:delete }
     methods: [POST, DELETE]
 
@@ -51,3 +51,23 @@ iaw_user_redirect_edit:
         _controller: IAWUserBundle:User:edit
         path: /user/editar/{id}
         permanent: true
+
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_passwords:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile

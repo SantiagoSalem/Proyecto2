@@ -35,7 +35,9 @@ class ParticipanteController extends Controller
 
       $deleteFormAjax = $this->createCustomForm(':PARTICIPANTE_ID', 'DELETE', 'iaw_participante_delete');
 
-      return $this->render('IAWParticipanteBundle:Participante:index.html.twig', array('pagination' => $pagination,
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWParticipanteBundle:Participante:index.html.twig', array('logInUser' => $logInUser,'pagination' => $pagination,
           'delete_form_ajax' => $deleteFormAjax->createView()));
     }
 
@@ -48,7 +50,9 @@ class ParticipanteController extends Controller
       $participante = new Participante();
       $form = $this->createCreateForm($participante);
 
-      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('form' => $form->createView()));
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
 
     }
 
@@ -102,8 +106,11 @@ class ParticipanteController extends Controller
 
         return $this->redirectToRoute('iaw_participante_index');
       }
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
     }
 
     /*****************************
@@ -128,7 +135,9 @@ class ParticipanteController extends Controller
 
       $deleteForm = $this->createCustomForm($participante->getId(), 'DELETE', 'iaw_participante_delete');
 
-      return $this->render('IAWParticipanteBundle:Participante:view.html.twig',array('participante' => $participante,'delete_form' => $deleteForm->createView()));
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWParticipanteBundle:Participante:view.html.twig',array('logInUser' => $logInUser,'participante' => $participante,'delete_form' => $deleteForm->createView()));
 
     }
 
@@ -210,7 +219,10 @@ class ParticipanteController extends Controller
 
       $form = $this->createEditForm($participante);
 
-      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('participante' => $participante,'form' => $form->createView()));
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+
+      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'participante' => $participante,'form' => $form->createView()));
     }
 
     private function createEditForm(Participante $entidad){
@@ -254,8 +266,10 @@ class ParticipanteController extends Controller
 
         return $this->redirectToRoute('iaw_participante_edit', array('id' => $participante->getId()));
       }
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('participante', 'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'participante', 'form' => $form->createView()));
     }
 
     /*****************************

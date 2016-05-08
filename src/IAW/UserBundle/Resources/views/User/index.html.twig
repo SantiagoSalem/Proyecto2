@@ -35,9 +35,9 @@
                           {% endif %}
                       </td>
                       <td>
-                        {% if user.isActive == 1 %}
+                        {% if user.enabled == 1 %}
                               <span class="text-success">Habilitado</span>
-                        {% elseif user.isActive == 0 %}
+                        {% elseif user.enabled == 0 %}
                               <span class="text-warning">Deshabilitado</span>
                         {% endif %}
                       </td>
