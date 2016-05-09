@@ -17,13 +17,8 @@ class TorneoType extends AbstractType
     {
         $builder
             ->add('nombreTorneo')
-            ->add('anioTorneo')
-            ->add('fechaInicio', DateType::class, array(
-                                                  'input'  => 'datetime',
-                                                  'widget' => 'choice',
-                                                  )
-                  )
-            ->add('save','submit',array('label' => 'Guardar Formulario'))
+            ->add('fechaInicio', 'date', array('data' => new \DateTime(),'years' => range(date('Y'), date('Y') + 5)))
+            ->add('save', 'submit', array('label' => 'Generar fixture'))
         ;
     }
 

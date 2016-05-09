@@ -2,8 +2,6 @@ iaw_torneo:
     resource: "@IAWTorneoBundle/Resources/config/routing.yml"
     prefix:   /
 
-
-
 iaw_participante:
     resource: "@IAWParticipanteBundle/Resources/config/routing.yml"
     prefix:   /

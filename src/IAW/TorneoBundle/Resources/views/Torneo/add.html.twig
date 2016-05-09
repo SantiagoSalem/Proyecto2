@@ -18,19 +18,13 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form.anioTorneo, 'Año del torneo') }}
-                    {{ form_widget(form.anioTorneo,{ 'attr' : {'class' : 'form-control'}}) }}
-                    <span class="text-danger"> {{ form_errors(form.anioTorneo) }}</span>
-                </div>
-
-                <div class="form-group">
                     {{ form_label(form.fechaInicio, 'Fecha de inicio') }}
                     {{ form_widget(form.fechaInicio,{ 'attr' : {'class' : 'form-control'}}) }}
                     <span class="text-danger"> {{ form_errors(form.fechaInicio) }}</span>
                 </div>
 
                 <p>
-                  {{ form_widget(form.save, {'label' : 'Crear Fixture', 'attr': {'class': 'btn btn-success'}})  }}
+                  {{ form_widget(form.save, {'label' : 'Generar Fixture', 'attr': {'class': 'btn btn-success'}})  }}
                 </p>
 
             {{form_end(form)}}

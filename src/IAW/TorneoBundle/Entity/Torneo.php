@@ -30,13 +30,6 @@ class Torneo
     private $nombreTorneo;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="anioTorneo", type="integer", unique=true)
-     */
-    private $anioTorneo;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fechaInicio", type="datetime", unique=true)
@@ -87,29 +80,6 @@ class Torneo
     }
 
     /**
-     * Set anioTorneo
-     *
-     * @param integer $anioTorneo
-     * @return Torneo
-     */
-    public function setAnioTorneo($anioTorneo)
-    {
-        $this->anioTorneo = $anioTorneo;
-
-        return $this;
-    }
-
-    /**
-     * Get anioTorneo
-     *
-     * @return integer
-     */
-    public function getAnioTorneo()
-    {
-        return $this->anioTorneo;
-    }
-
-    /**
      * Add fechas
      *
      * @param \IAW\TorneoBundle\Entity\FechaTorneo $fechas
@@ -151,14 +121,14 @@ class Torneo
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-    
+
         return $this;
     }
 
     /**
      * Get fechaInicio
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaInicio()
     {
