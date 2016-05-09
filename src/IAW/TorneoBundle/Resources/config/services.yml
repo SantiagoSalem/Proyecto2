@@ -1,0 +1,4 @@
+services:
+#    iaw_torneo.example:
+#        class: IAW\TorneoBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
