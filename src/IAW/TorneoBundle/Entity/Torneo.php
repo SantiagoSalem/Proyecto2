@@ -3,6 +3,7 @@
 namespace IAW\TorneoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Torneo
@@ -35,11 +36,27 @@ class Torneo
      */
     private $anioTorneo;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechaInicio", type="datetime", unique=true)
+     */
+    private $fechaInicio;
 
+    /**
+   * @ORM\OneToMany(targetEntity="FechaTorneo", mappedBy="torneo")
+   */
+   private $fechas;
+
+
+   public function  __construct()
+   {
+        $this->fechas = new ArrayCollection();
+   }
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,14 +72,14 @@ class Torneo
     public function setNombreTorneo($nombreTorneo)
     {
         $this->nombreTorneo = $nombreTorneo;
-    
+
         return $this;
     }
 
     /**
      * Get nombreTorneo
      *
-     * @return string 
+     * @return string
      */
     public function getNombreTorneo()
     {
@@ -78,17 +95,73 @@ class Torneo
     public function setAnioTorneo($anioTorneo)
     {
         $this->anioTorneo = $anioTorneo;
-    
+
         return $this;
     }
 
     /**
      * Get anioTorneo
      *
-     * @return integer 
+     * @return integer
      */
     public function getAnioTorneo()
     {
         return $this->anioTorneo;
+    }
+
+    /**
+     * Add fechas
+     *
+     * @param \IAW\TorneoBundle\Entity\FechaTorneo $fechas
+     * @return Torneo
+     */
+    public function addFecha(\IAW\TorneoBundle\Entity\FechaTorneo $fechas)
+    {
+        $this->fechas[] = $fechas;
+
+        return $this;
+    }
+
+    /**
+     * Remove fechas
+     *
+     * @param \IAW\TorneoBundle\Entity\FechaTorneo $fechas
+     */
+    public function removeFecha(\IAW\TorneoBundle\Entity\FechaTorneo $fechas)
+    {
+        $this->fechas->removeElement($fechas);
+    }
+
+    /**
+     * Get fechas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFechas()
+    {
+        return $this->fechas;
+    }
+
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     * @return Torneo
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime 
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
     }
 }

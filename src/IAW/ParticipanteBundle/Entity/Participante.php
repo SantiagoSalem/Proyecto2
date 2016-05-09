@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
@@ -63,6 +64,22 @@ class Participante
     */
     private $image;
 
+    /**
+     *  @ORM\OneToOne(targetEntity="Puntaje", inversedBy="equipo")
+     *  @ORM\JoinColumn(name="puntaje_id", referencedColumnName="id")
+     */
+     private $puntaje;
+
+   /**
+    * @ORM\ManyToMany(targetEntity="\IAW\TorneoBundle\Entity\Partido", inversedBy="equipos")
+    * @ORM\JoinTable(name="equipos_partidos")
+    */
+    private $partidos;
+
+   public function __construct()
+   {
+        $this->partidos = new ArrayCollection();
+   }
 
     /**
      * Get id
@@ -178,4 +195,60 @@ class Participante
         return $this->image;
     }
 
+
+    /**
+     * Set puntaje
+     *
+     * @param \IAW\ParticipanteBundle\Entity\Puntaje $puntaje
+     * @return Participante
+     */
+    public function setPuntaje(\IAW\ParticipanteBundle\Entity\Puntaje $puntaje = null)
+    {
+        $this->puntaje = $puntaje;
+
+        return $this;
+    }
+
+    /**
+     * Get puntaje
+     *
+     * @return \IAW\ParticipanteBundle\Entity\Puntaje
+     */
+    public function getPuntaje()
+    {
+        return $this->puntaje;
+    }
+
+    /**
+     * Add partidos
+     *
+     * @param \IAW\ParticipanteBundle\Entity\Partido $partidos
+     * @return Participante
+     */
+    public function addPartido(\IAW\ParticipanteBundle\Entity\Partido $partidos)
+    {
+        $this->partidos[] = $partidos;
+
+        return $this;
+    }
+
+    /**
+     * Remove partidos
+     *
+     * @param \IAW\ParticipanteBundle\Entity\Partido $partidos
+     */
+    public function removePartido(\IAW\ParticipanteBundle\Entity\Partido $partidos)
+    {
+        $this->partidos->removeElement($partidos);
+    }
+
+    /**
+     * Get partidos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPartidos()
+    {
+        return $this->partidos;
+    }
 }
