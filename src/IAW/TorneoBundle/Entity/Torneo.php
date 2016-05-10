@@ -32,7 +32,7 @@ class Torneo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaInicio", type="datetime", unique=true)
+     * @ORM\Column(name="fechaInicio", type="datetime")
      */
     private $fechaInicio;
 

@@ -23,18 +23,32 @@ class Partido
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="golesEquipo1", type="integer", nullable=true, unique=true)
+     * @ORM\Column(name="equipoLocal", type="string", length=100)
      */
-    private $golesEquipo1;
+    private $equipoLocal;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="equipoVisitante", type="string", length=100)
+     */
+    private $equipoVisitante;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="golesEquipo2", type="integer", nullable=true, unique=true)
+     * @ORM\Column(name="golesEquipoLocal", type="integer", nullable=true, unique=true)
      */
-    private $golesEquipo2;
+    private $golesEquipoLocal;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="golesEquipoVisitante", type="integer", nullable=true, unique=true)
+     */
+    private $golesEquipoVisitante;
 
     /**
      * @var bool
@@ -48,11 +62,6 @@ class Partido
     * @ORM\JoinColumn(name="fecha_id", referencedColumnName="id")
     */
    private $fecha;
-
-   /**
-      * @ORM\ManyToMany(targetEntity="\IAW\ParticipanteBundle\Entity\Participante", mappedBy="partidos")
-      */
-   private $equipos;
 
    public function __construct()
    {
@@ -70,49 +79,96 @@ class Partido
     }
 
     /**
-     * Set golesEquipo1
+     * Set equipoLocal
      *
-     * @param integer $golesEquipo1
+     * @param string $equipoLocal
      * @return Partido
      */
-    public function setGolesEquipo1($golesEquipo1)
+    public function setEquipoLocal($equipoLocal)
     {
-        $this->golesEquipo1 = $golesEquipo1;
+        $this->$equipoLocal = $equipoLocal;
 
         return $this;
     }
 
     /**
-     * Get golesEquipo1
+     * Get equipoLocal
      *
-     * @return integer
+     * @return string
      */
-    public function getGolesEquipo1()
+    public function getEquipoLocal()
     {
-        return $this->golesEquipo1;
+        return $this->equipoLocal;
     }
 
     /**
-     * Set golesEquipo2
+     * Set equipoVisitante
      *
-     * @param integer $golesEquipo2
+     * @param string $equipoVisitante
      * @return Partido
      */
-    public function setGolesEquipo2($golesEquipo2)
+    public function setEquipoVisitante($equipoVisitante)
     {
-        $this->golesEquipo2 = $golesEquipo2;
+        $this->equipoVisitante = equipoVisitante;
 
         return $this;
     }
 
     /**
-     * Get golesEquipo2
+     * Get equipoVisitante
+     *
+     * @return string
+     */
+    public function getEquipoVisitante()
+    {
+        return $this->equipoVisitante;
+    }
+
+
+    /**
+     * Set golesEquipoLocal
+     *
+     * @param integer $golesEquipoLocal
+     * @return Partido
+     */
+    public function setGolesEquipoLocal($golesEquipoLocal)
+    {
+        $this->golesEquipoLocal = $golesEquipoLocal;
+
+        return $this;
+    }
+
+    /**
+     * Get golesEquipoLocal
      *
      * @return integer
      */
-    public function getGolesEquipo2()
+    public function getGolesEquipoLocal()
     {
-        return $this->golesEquipo2;
+        return $this->golesEquipoLocal;
+    }
+
+    /**
+     * Set golesEquipoVisitante
+     *
+     * @param integer $golesEquipoVisitante
+     * @return Partido
+     */
+    public function setGolesEquipoVisitante($golesEquipoVisitante)
+    {
+        $this->golesEquipoVisitante = $golesEquipoVisitante;
+
+        return $this;
+    }
+
+    /**
+     * Get golesEquipoVisitante
+     *
+     * @return integer
+     */
+    public function getGolesEquipoVisitante()
+    {
+        return $this->golesEquipoVisitante;
     }
 
     /**
@@ -184,38 +240,4 @@ class Partido
         return $this->fecha;
     }
 
-
-
-    /**
-     * Get equipos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEquipos()
-    {
-        return $this->equipos;
-    }
-
-    /**
-     * Add equipos
-     *
-     * @param \IAW\TorneoBundle\Entity\Participante $equipos
-     * @return Partido
-     */
-    public function addEquipo(\IAW\TorneoBundle\Entity\Participante $equipos)
-    {
-        $this->equipos[] = $equipos;
-
-        return $this;
-    }
-
-    /**
-     * Remove equipos
-     *
-     * @param \IAW\TorneoBundle\Entity\Participante $equipos
-     */
-    public function removeEquipo(\IAW\TorneoBundle\Entity\Participante $equipos)
-    {
-        $this->equipos->removeElement($equipos);
-    }
 }
