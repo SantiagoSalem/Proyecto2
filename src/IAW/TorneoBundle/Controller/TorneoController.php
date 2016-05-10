@@ -86,29 +86,46 @@ class TorneoController extends Controller
             $fechaDelPartido->modify('+7 day');
           }
 
+          $equiposPorFecha = array();
+
+          foreach($fechasArr as $f){
+            $equiposPorFecha[] = array();
+          }
+
+
+
           $matchs = array();
 
 
           foreach($participantes as $k){
-            $nroFecha = 0;
             foreach($participantes as $j){
                 if($k["name"] == $j["name"]){
                         continue;
                 }
                 $z = array($k["name"],$j["name"]);
-                sort($z);
-                if(!in_array($z,$matchs)){
+                $z2=array_reverse($z);
+                if(!in_array($z2,$matchs)){
                         $matchs[] = $z;
 
                         $partido = new Partido();
-
+                        $nroFecha = 0;
+                        foreach($equiposPorFecha as $ef){
+                          if(in_array($k["name"],$ef) || in_array($j["name"],$ef) ){
+                            $nroFecha++;
+                          }
+                          else{
+                            break;
+                          }
+                        }
                         $partido->setFecha($fechasArr[$nroFecha]);
                         $partido->setEquipoLocal($z[0]);
                         $partido->setEquipoVisitante($z[1]);
 
+                        array_push($equiposPorFecha[$nroFecha],$k["name"]);
+                        array_push($equiposPorFecha[$nroFecha],$j["name"]);
+
                         $em->persist($partido);
                         $em->flush();
-                        $nroFecha++;
                 }
             }
           }
