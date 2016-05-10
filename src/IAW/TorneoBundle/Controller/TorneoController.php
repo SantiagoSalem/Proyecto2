@@ -5,10 +5,13 @@ namespace IAW\TorneoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use IAW\TorneoBundle\Entity\Torneo;
 use IAW\TorneoBundle\Entity\Partido;
+use IAW\TorneoBundle\Entity\FechaTorneo;
 use IAW\ParticipanteBundle\Entity\Participante;
 use IAW\TorneoBundle\Form\TorneoType;
+
 
 class TorneoController extends Controller
 {
@@ -53,21 +56,41 @@ class TorneoController extends Controller
           $em->persist($torneo);
           $em->flush();
 
-          //Obtengo la fecha que se ingreso en el formulario
-          $fechaInicio = $form->get('fechaInicio')->getData();
-          $fechaDelPartido = new DateTime($fechaInicio);
-
-          //Por ejemplo si quiero sumar dias a la fecha se hace asi
-          //$fechaDelPartido->modify('+7 day');
-
           //Obtengo todos los participantes.
           $dql = "SELECT p.name FROM IAWParticipanteBundle:Participante p";
           //Ejecuto la consulta
           $participantes = $em->createQuery($dql)->getResult();
 
+          $dql = "SELECT COUNT(p.name) FROM IAWParticipanteBundle:Participante p";
+
+          $nroParticipantes = $em->createQuery($dql)->getSingleScalarResult();
+
+          //Obtengo la fecha que se ingreso en el formulario
+          $fechaInicio = $form->get('fechaInicio')->getData();
+          $fechaDelPartido = new \DateTime($fechaInicio->format('Y-m-d'));
+
+          $fechasArr = array();
+
+          //Genero las fecha del torneo, o sea fecha 1, fecha 2 ...
+          for ($i=0; $i < $nroParticipantes - 1; $i++) {
+            $fecha_torneo = new FechaTorneo();
+            $fecha_torneo->setDate($fechaDelPartido);
+            $fecha_torneo->setTorneo($torneo);
+
+            array_push($fechasArr,$fecha_torneo);
+
+            $em->persist($fecha_torneo);
+            $em->flush();
+
+            //La proxima fecha es a los 7 dias posteriores
+            $fechaDelPartido->modify('+7 day');
+          }
+
           $matchs = array();
 
+
           foreach($participantes as $k){
+            $nroFecha = 0;
             foreach($participantes as $j){
                 if($k["name"] == $j["name"]){
                         continue;
@@ -79,12 +102,13 @@ class TorneoController extends Controller
 
                         $partido = new Partido();
 
+                        $partido->setFecha($fechasArr[$nroFecha]);
                         $partido->setEquipoLocal($z[0]);
                         $partido->setEquipoVisitante($z[1]);
 
                         $em->persist($partido);
                         $em->flush();
-
+                        $nroFecha++;
                 }
             }
           }

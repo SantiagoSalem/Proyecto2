@@ -25,7 +25,7 @@ class FechaTorneo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime", unique=true)
+     * @ORM\Column(name="date", type="datetime")
      */
     private $date;
 
@@ -81,10 +81,10 @@ class FechaTorneo
     /**
      * Set torneo
      *
-     * @param \IAW\TorneoBundle\Entity\FechaTorneo $torneo
+     * @param \IAW\TorneoBundle\Entity\Torneo $torneo
      * @return FechaTorneo
      */
-    public function setTorneo(\IAW\TorneoBundle\Entity\FechaTorneo $torneo = null)
+    public function setTorneo(\IAW\TorneoBundle\Entity\Torneo $torneo = null)
     {
         $this->torneo = $torneo;
 
@@ -94,7 +94,7 @@ class FechaTorneo
     /**
      * Get torneo
      *
-     * @return \IAW\TorneoBundle\Entity\FechaTorneo
+     * @return \IAW\TorneoBundle\Entity\Torneo
      */
     public function getTorneo()
     {
