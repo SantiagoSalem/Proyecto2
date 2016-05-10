@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use IAW\TorneoBundle\Entity\Torneo;
+use IAW\TorneoBundle\Entity\Partido;
+use IAW\ParticipanteBundle\Entity\Participante;
 use IAW\TorneoBundle\Form\TorneoType;
 
 class TorneoController extends Controller
@@ -51,11 +53,48 @@ class TorneoController extends Controller
           $em->persist($torneo);
           $em->flush();
 
-          //Genero el mensaje para mostrar
-      //    $this->addFlash(
-        //      'mensaje',
-          //    'Nuevo fixture creado correctamente'
-          //);
+          //Obtengo la fecha que se ingreso en el formulario
+          $fechaInicio = $form->get('fechaInicio')->getData();
+          $fechaDelPartido = new DateTime($fechaInicio);
+
+          //Por ejemplo si quiero sumar dias a la fecha se hace asi
+          //$fechaDelPartido->modify('+7 day');
+
+          //Obtengo todos los participantes.
+          $dql = "SELECT p.name FROM IAWParticipanteBundle:Participante p";
+          //Ejecuto la consulta
+          $participantes = $em->createQuery($dql)->getResult();
+
+          $matchs = array();
+
+          foreach($participantes as $k){
+            foreach($participantes as $j){
+                if($k["name"] == $j["name"]){
+                        continue;
+                }
+                $z = array($k["name"],$j["name"]);
+                sort($z);
+                if(!in_array($z,$matchs)){
+                        $matchs[] = $z;
+
+                        $partido = new Partido();
+
+                        $partido->setEquipoLocal($z[0]);
+                        $partido->setEquipoVisitante($z[1]);
+
+                        $em->persist($partido);
+                        $em->flush();
+
+                }
+            }
+          }
+
+
+        //Genero el mensaje para mostrar
+        //$this->addFlash(
+        //'mensaje',
+        //'Nuevo fixture creado correctamente'
+        //);
 
         return $this->redirectToRoute('iaw_torneo_index');
 
@@ -64,6 +103,8 @@ class TorneoController extends Controller
       //En caso de algun problema, renderizo el formulario
       return $this->render('IAWFixtureBundle:Fixture:add.html.twig', array('logInUser' => $logInUser, 'form' => $form->createView()));
     }
+
+
 
 
 }

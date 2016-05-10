@@ -39,21 +39,21 @@ class Partido
     /**
      * @var int
      *
-     * @ORM\Column(name="golesEquipoLocal", type="integer", nullable=true, unique=true)
+     * @ORM\Column(name="golesEquipoLocal", type="integer", nullable=true)
      */
     private $golesEquipoLocal;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="golesEquipoVisitante", type="integer", nullable=true, unique=true)
+     * @ORM\Column(name="golesEquipoVisitante", type="integer", nullable=true)
      */
     private $golesEquipoVisitante;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="resultadoCargado", type="boolean", nullable=true, unique=true)
+     * @ORM\Column(name="resultadoCargado", type="boolean", nullable=true)
      */
     private $resultadoCargado;
 
@@ -86,7 +86,7 @@ class Partido
      */
     public function setEquipoLocal($equipoLocal)
     {
-        $this->$equipoLocal = $equipoLocal;
+        $this->equipoLocal = $equipoLocal;
 
         return $this;
     }
@@ -109,7 +109,7 @@ class Partido
      */
     public function setEquipoVisitante($equipoVisitante)
     {
-        $this->equipoVisitante = equipoVisitante;
+        $this->equipoVisitante = $equipoVisitante;
 
         return $this;
     }
