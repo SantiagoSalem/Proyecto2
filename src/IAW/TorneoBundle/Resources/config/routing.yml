@@ -6,6 +6,10 @@ iaw_torneo_index:
     path: /Fixture/index
     defaults: { _controller: IAWTorneoBundle:Torneo:index }
 
+iaw_partido_index:
+    path: /editar/partidos/index
+    defaults: { _controller: IAWTorneoBundle:Partido:index }
+
 iaw_torneo_add:
     path: /Fixture/add
     defaults: { _controller: IAWTorneoBundle:Torneo:add }

@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+  {{ parent() }}
+  <br />
+  <div class="container">
+    <div class="col-md-12">
+      <div class="page-header margin-none">
+        <h2 class="padding-none">Partidos</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover" id="tablaAjustada">
+          <thead>
+              <tr>
+                  <th>Local</th>
+                  <th>Goles local</th>
+                  <th>Goles visitante</th>
+                  <th>Visitante</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for partido in partidos %}
+                  <tr data-id="{{ partido.id }}">
+                      <td>{{partido.equipoLocal}}
+                       {% if partido.imagenEL != '' %}
+                            <img src="{{ asset('uploads/' ~ partido.imagenEL) }}" heigth="30px" width="30px" />
+                        {% else %}
+                            <img src="{{ asset('uploads/noImage.png') }}" heigth="30px" width="30px" />
+                        {% endif %}
+                      </td>
+                      <td>
+                        <textarea rows="1" cols="1" maxlength="2"></textarea>
+                      </td>
+                      <td>
+                        <textarea rows="1" cols="1  " maxlength="2"></textarea>
+                      </td>
+                      <td>{{partido.equipoVisitante}}
+                      {#  {% if partido.imagenEV != '' %}
+                            <img src="{{ asset('uploads/' ~ partido.imagenEV) }}" heigth="30px" width="30px" />
+                        {% else %}
+                            <img src="{{ asset('uploads/noImage.png') }}" heigth="30px" width="30px" />
+                        {% endif %} #}
+                      </td>
+
+
+
+                  </tr>
+              {% endfor %}
+            </tbody>
+          </table> 
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

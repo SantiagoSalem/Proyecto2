@@ -21,6 +21,10 @@ class TorneoController extends Controller
       //return $this->render('IAWTorneoBundle:Default:index.html.twig');
     }
 
+    
+
+
+
     public function addAction(){
       $fixture = new Torneo();
       $form = $this->createCreateForm($fixture);
