@@ -1,0 +1,49 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+      {{ parent() }}
+      <br />
+      <div class="main container">
+        <div class="row well">
+          <div class="col-md-6">
+            <div class="page-header">
+              <h2>{{ partido.equipoLocal}} VS {{ partido.equipoVisitante}} </h2>
+
+            </div>
+            {{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+              <h4 class="text-danger">{{ form_errors(form)  }} </h4>
+
+              <div class="form-group">
+                  {{ form_label(form.equipoLocal) }}
+                  {{ form_widget(form.equipoLocal,{ 'attr' : {'class' : 'form-control'} }) }}
+                  <span class="text-danger"> {{ form_errors(form.equipoLocal) }}</span>
+              </div>
+
+              <div class="form-group">
+                  {{ form_label(form.golesEquipoLocal) }}
+                  {{ form_widget(form.golesEquipoLocal,{ 'attr' : {'class' : 'form-control'} }) }}
+                  <span class="text-danger"> {{ form_errors(form.golesEquipoLocal) }}</span>
+              </div>
+
+              <div class="form-group">
+                  {{ form_label(form.equipoVisitante) }}
+                  {{ form_widget(form.equipoVisitante,{ 'attr' : {'class' : 'form-control'} }) }}
+                  <span class="text-danger"> {{ form_errors(form.equipoVisitante) }}</span>
+              </div>
+
+              <div class="form-group">
+                  {{ form_label(form.golesEquipoVisitante) }}
+                  {{ form_widget(form.golesEquipoVisitante,{ 'attr' : {'class' : 'form-control'} }) }}
+                  <span class="text-danger"> {{ form_errors(form.golesEquipoVisitante) }}</span>
+              </div>
+              <p>
+
+                {{ form_widget(form.save, {'label' : 'Guardar resultado', 'attr': {'class': 'btn btn-success'}})  }}
+              </p>
+
+
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+{% endblock %}

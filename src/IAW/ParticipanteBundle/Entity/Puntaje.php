@@ -22,65 +22,68 @@ class Puntaje
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="equipo", type="string", unique=true)
+     */
+    private $equipo;
+
+    /**
      * @var int
      *
-     * @ORM\Column(name="puntos", type="integer", unique=true)
+     * @ORM\Column(name="puntos", type="integer")
      */
     private $puntos;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="pj", type="integer", unique=true)
+     * @ORM\Column(name="pj", type="integer")
      */
     private $pj;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="pg", type="integer", unique=true)
+     * @ORM\Column(name="pg", type="integer")
      */
     private $pg;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="pe", type="integer", unique=true)
+     * @ORM\Column(name="pe", type="integer")
      */
     private $pe;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="pp", type="integer", unique=true)
+     * @ORM\Column(name="pp", type="integer")
      */
     private $pp;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="gf", type="integer", unique=true)
+     * @ORM\Column(name="gf", type="integer")
      */
     private $gf;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="gc", type="integer", unique=true)
+     * @ORM\Column(name="gc", type="integer")
      */
     private $gc;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="dg", type="integer", unique=true)
+     * @ORM\Column(name="dg", type="integer")
      */
     private $dg;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Participante", mappedBy="puntaje")
-     */
-    private $equipo;
 
 
     /**
@@ -91,6 +94,16 @@ class Puntaje
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get equipo
+     *
+     * @return string
+     */
+    public function getEquipo()
+    {
+        return $this->equipo;
     }
 
     /**
@@ -137,6 +150,13 @@ class Puntaje
     public function getPj()
     {
         return $this->pj;
+    }
+
+    public function setEquipo($equipo)
+    {
+        $this->equipo = $equipo;
+
+        return $this;
     }
 
     /**
@@ -277,26 +297,4 @@ class Puntaje
         return $this->dg;
     }
 
-    /**
-     * Set equipo
-     *
-     * @param \IAW\ParticipanteBundle\Entity\Participante $equipo
-     * @return Puntaje
-     */
-    public function setEquipo(\IAW\ParticipanteBundle\Entity\Participante $equipo = null)
-    {
-        $this->equipo = $equipo;
-    
-        return $this;
-    }
-
-    /**
-     * Get equipo
-     *
-     * @return \IAW\ParticipanteBundle\Entity\Participante 
-     */
-    public function getEquipo()
-    {
-        return $this->equipo;
-    }
 }

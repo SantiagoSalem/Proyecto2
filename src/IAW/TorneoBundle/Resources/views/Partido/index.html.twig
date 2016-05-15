@@ -13,41 +13,44 @@
           <thead>
               <tr>
                   <th>Local</th>
-                  <th>Goles local</th>
-                  <th>Goles visitante</th>
                   <th>Visitante</th>
+                  <th>Acción</th>
               </tr>
           </thead>
           <tbody>
+
               {% for partido in partidos %}
                   <tr data-id="{{ partido.id }}">
+
+
+
                       <td>{{partido.equipoLocal}}
                        {% if partido.imagenEL != '' %}
-                            <img src="{{ asset('uploads/' ~ partido.imagenEL) }}" heigth="30px" width="30px" />
+                            <img src="{{ asset('uploads/' ~ partido.imagenEL) }}" style="width:30px;height:30px;" />
                         {% else %}
-                            <img src="{{ asset('uploads/noImage.png') }}" heigth="30px" width="30px" />
+                            <img src="{{ asset('uploads/noImage.png') }}" style="width:30px;height:30px;" />
                         {% endif %}
                       </td>
+
                       <td>
-                        <textarea rows="1" cols="1" maxlength="2"></textarea>
-                      </td>
-                      <td>
-                        <textarea rows="1" cols="1  " maxlength="2"></textarea>
-                      </td>
-                      <td>{{partido.equipoVisitante}}
-                      {#  {% if partido.imagenEV != '' %}
-                            <img src="{{ asset('uploads/' ~ partido.imagenEV) }}" heigth="30px" width="30px" />
+                       {% if partido.imagenEV != '' %}
+                            <img src="{{ asset('uploads/' ~ partido.imagenEV) }}" style="width:30px;height:30px;" />
                         {% else %}
-                            <img src="{{ asset('uploads/noImage.png') }}" heigth="30px" width="30px" />
-                        {% endif %} #}
+                            <img src="{{ asset('uploads/noImage.png') }}" style="width:30px;height:30px;" />
+                        {% endif %}
+                        {{partido.equipoVisitante}}
                       </td>
 
-
+                      <td class="actions">
+                        <a href="{{ path('iaw_partido_edit', {id: partido.id}) }}" class="btn btn-sm btn-info">
+                          Editar
+                        </a>
+                      </td>
 
                   </tr>
               {% endfor %}
             </tbody>
-          </table> 
+          </table>
         </div>
       </div>
     </div>

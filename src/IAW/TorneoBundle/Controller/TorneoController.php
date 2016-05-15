@@ -11,6 +11,8 @@ use IAW\TorneoBundle\Entity\Partido;
 use IAW\TorneoBundle\Entity\FechaTorneo;
 use IAW\ParticipanteBundle\Entity\Participante;
 use IAW\TorneoBundle\Form\TorneoType;
+use IAW\ParticipanteBundle\Entity\Puntaje;
+
 
 
 class TorneoController extends Controller
@@ -21,7 +23,7 @@ class TorneoController extends Controller
       //return $this->render('IAWTorneoBundle:Default:index.html.twig');
     }
 
-    
+
 
 
 
@@ -132,6 +134,22 @@ class TorneoController extends Controller
                         $em->flush();
                 }
             }
+            $puntaje = new Puntaje();
+            $puntaje->setPuntos(0);
+            $puntaje->setPj(0);
+            $puntaje->setPg(0);
+            $puntaje->setPe(0);
+            $puntaje->setPp(0);
+            $puntaje->setGf(0);
+            $puntaje->setGc(0);
+            $puntaje->setDg(0);
+            $puntaje->setEquipo($k["name"]);
+            $em->persist($puntaje);
+            $em->flush();
+
+
+
+
           }
 
 

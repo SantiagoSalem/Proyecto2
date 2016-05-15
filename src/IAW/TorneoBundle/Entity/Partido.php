@@ -63,10 +63,34 @@ class Partido
     */
    private $fecha;
 
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="editor", type="string", length=100, nullable=true)
+    */
+   private $editor;
+
    public function __construct()
    {
         $this->equipos = new ArrayCollection();
    }
+
+
+
+
+   public function getEditor()
+   {
+       return $this->editor;
+   }
+
+   public function setEditor($editor)
+   {
+       $this->editor = $editor;
+
+       return $this;
+   }
+
+
 
     /**
      * Get id
