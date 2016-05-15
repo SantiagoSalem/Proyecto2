@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use IAW\TorneoBundle\Entity\Torneo;
 use IAW\TorneoBundle\Entity\Partido;
+use IAW\TorneoBundle\Entity\User;
 use IAW\TorneoBundle\Entity\FechaTorneo;
 use IAW\ParticipanteBundle\Entity\Participante;
 use IAW\TorneoBundle\Form\TorneoType;
@@ -17,14 +18,45 @@ use IAW\ParticipanteBundle\Entity\Puntaje;
 
 class TorneoController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-      return new Response("Buenas a todos!");
-      //return $this->render('IAWTorneoBundle:Default:index.html.twig');
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      $em = $this->getDoctrine()->getManager();
+
+      //El primer participante que aparece en la lista es el ultimo insertado.
+      $dql = "SELECT t FROM IAWTorneoBundle:Torneo t"; //Me tira error al ordenar por fecha...
+
+      //Ejecuto la consulta
+      $torneos = $em->createQuery($dql)->getResult();
+
+      /*Aplico la paginacion con:
+            * la consulta ejecutada,
+            * empieza desde la pagina 1,
+            * y muestro 10 partidos por pagina
+      */
+
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      return $this->render('IAWTorneoBundle:Torneo:index.html.twig', array('logInUser' => $logInUser,'torneos' => $torneos));
     }
 
 
+    public function estadisticasAction(){
 
+      $em = $this->getDoctrine()->getManager();
+      //El primer usuario que aparece en la lista es el ultimo insertado.
+      $dql = "SELECT p.id, p.equipo, p.pj, p.pg, p.pe, p.pp, p.puntos, p.dg, pp.imagePath as imagenEquipo
+              FROM IAWParticipanteBundle:Puntaje p, IAWParticipanteBundle:Participante pp
+              WHERE p.equipo =  pp.name
+              ORDER BY p.puntos DESC";
+      //Ejecuto la consulta
+      $estadisticas = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWTorneoBundle:Estadisticas:index.html.twig', array('estadisticas' => $estadisticas));
+
+
+    }
 
 
     public function addAction(){
@@ -70,6 +102,15 @@ class TorneoController extends Controller
           $dql = "SELECT COUNT(p.name) FROM IAWParticipanteBundle:Participante p";
 
           $nroParticipantes = $em->createQuery($dql)->getSingleScalarResult();
+
+          $dql = "SELECT e.username
+                  FROM IAWUserBundle:User e
+                  WHERE e.enabled = 1 AND e.role = 'ROLE_EDITOR'";
+
+          //Editores habilitados
+          $editores = $em->createQuery($dql)->getResult();
+
+          var_dump($editores);
 
           //Obtengo la fecha que se ingreso en el formulario
           $fechaInicio = $form->get('fechaInicio')->getData();
@@ -123,6 +164,10 @@ class TorneoController extends Controller
                             break;
                           }
                         }
+
+                        $posEditorAleatorio = array_rand($editores, 1);
+
+                        $partido->setEditor($editores[$posEditorAleatorio]["username"]);
                         $partido->setFecha($fechasArr[$nroFecha]);
                         $partido->setEquipoLocal($z[0]);
                         $partido->setEquipoVisitante($z[1]);

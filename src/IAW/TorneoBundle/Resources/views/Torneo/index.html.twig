@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+  {{ parent() }}
+  {{ include('IAWParticipanteBundle:Participante:messages/success.html.twig') }}
+  <br />
+  <div class="container">
+    <div class="col-md-12">
+      <div class="page-header margin-none">
+        <h2 class="padding-none">Participantes</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover" id="tablaAjustada">
+          <thead>
+              <tr>
+                  <th>Nombre Torneo</th>
+                  <th>Fecha Inicio</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for torneo in torneos %}
+                  <tr data-id="{{ torneo.id }}">
+                      <td>{{torneo.nombreTorneo}}</td>
+
+                      <td class="actions">
+                        <a href="{{ path('iaw_partido_index') }}" class="btn btn-sm btn-info">
+                          Ver partidos
+                        </a>
+                      </td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

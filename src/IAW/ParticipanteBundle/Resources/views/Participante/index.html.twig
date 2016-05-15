@@ -26,21 +26,24 @@
                       <td>{{participante.members}}</td>
                       <td>
                           {% if participante.imagePath != '' %}
-                              <img src="{{ asset('uploads/' ~ participante.imagePath) }}" heigth="30px" width="30px" />
+                              <img src="{{ asset('uploads/' ~ participante.imagePath) }}"  style="width:30px;height:30px;"  />
                           {% else %}
-                              <img src="{{ asset('uploads/noImage.png') }}" heigth="30px" width="30px" />
+                              <img src="{{ asset('uploads/noImage.png') }}"  style="width:30px;height:30px;"  />
                           {% endif %}
                       </td>
                       <td class="actions">
                         <a href="{{ path('iaw_participante_view', {id: participante.id}) }}" class="btn btn-sm btn-info">
                           Ver
                         </a>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('iaw_participante_edit', {id: participante.id}) }}" class="btn btn-sm btn-primary">
                           Editar
                         </a>
                         <a href="#" class="btn btn-sm btn-danger btn-delete">
                           Eliminar
                         </a>
+                        {% endif %}
+
                       </td>
                   </tr>
               {% endfor %}

@@ -16,6 +16,10 @@ iaw_torneo_create:
     defaults: { _controller: IAWTorneoBundle:Torneo:create }
     methods: POST
 
+iaw_torneo_estadisticas:
+    path: /estadisticas
+    defaults: { _controller: IAWTorneoBundle:Torneo:estadisticas }
+
 iaw_partido_index:
     path: /editar/partidos/index
     defaults: { _controller: IAWTorneoBundle:Partido:index }
@@ -29,3 +33,12 @@ iaw_partido_update:
     path: /update/partidos/resultado/{id}
     defaults: { _controller: IAWTorneoBundle:Partido:update }
     methods: [POST, PUT]
+
+
+iaw_partido_verPartidos:
+    path: /partidos/
+    defaults: { _controller: IAWTorneoBundle:Partido:verPartidos }
+
+iaw_partido_resultadosPartidos:
+  path: /partidos/resultados
+  defaults: { _controller: IAWTorneoBundle:Partido:resultadosPartidos }

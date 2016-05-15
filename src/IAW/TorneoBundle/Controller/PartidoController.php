@@ -22,10 +22,47 @@ class PartidoController extends Controller
 
   public function indexAction(Request $request)
   {
+
+    $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+    $em = $this->getDoctrine()->getManager();
+
+    if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') === true) {
+
+      $dql = "SELECT p.id, p.equipoLocal, p.equipoVisitante, IDENTITY(p.fecha) as fecha, pp.imagePath as imagenEL, ppp.imagePath as imagenEV, p.editor
+              FROM IAWTorneoBundle:Partido p, IAWParticipanteBundle:Participante pp, IAWParticipanteBundle:Participante ppp
+              WHERE p.equipoLocal = pp.name  AND p.equipoVisitante = ppp.name AND p.golesEquipoLocal IS NULL
+              ORDER BY p.fecha ASC";
+    }
+    else{
+    //El primer participante que aparece en la lista es el ultimo insertado.
+    $dql = "SELECT p.id, p.equipoLocal, p.equipoVisitante, IDENTITY(p.fecha) as fecha, pp.imagePath as imagenEL, ppp.imagePath as imagenEV
+            FROM IAWTorneoBundle:Partido p, IAWParticipanteBundle:Participante pp, IAWParticipanteBundle:Participante ppp
+            WHERE p.equipoLocal = pp.name  AND p.equipoVisitante = ppp.name AND p.golesEquipoLocal IS NULL AND p.editor = '$logInUser'
+            ORDER BY p.fecha ASC"; //Me tira error al ordenar por fecha...
+    }
+    //Ejecuto la consulta
+    $partidos = $em->createQuery($dql)->getResult();
+
+    /*Aplico la paginacion con:
+          * la consulta ejecutada,
+          * empieza desde la pagina 1,
+          * y muestro 10 partidos por pagina
+    */
+
+    $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('logInUser' => $logInUser,'partidos' => $partidos));
+
+  }
+
+  public function verPartidosAction()
+  {
+
     $em = $this->getDoctrine()->getManager();
 
     //El primer participante que aparece en la lista es el ultimo insertado.
-    $dql = "SELECT p.id, p.equipoLocal, p.equipoVisitante, pp.imagePath as imagenEL, ppp.imagePath as imagenEV
+    $dql = "SELECT p.id, p.equipoLocal, p.equipoVisitante, IDENTITY(p.fecha) as fecha, pp.imagePath as imagenEL, ppp.imagePath as imagenEV
             FROM IAWTorneoBundle:Partido p, IAWParticipanteBundle:Participante pp, IAWParticipanteBundle:Participante ppp
             WHERE p.equipoLocal = pp.name  AND p.equipoVisitante = ppp.name
             ORDER BY p.fecha ASC"; //Me tira error al ordenar por fecha...
@@ -41,9 +78,37 @@ class PartidoController extends Controller
 
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('logInUser' => $logInUser,'partidos' => $partidos));
+    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('partidos' => $partidos));
 
   }
+
+  public function resultadosPartidosAction()
+  {
+
+    $em = $this->getDoctrine()->getManager();
+
+    //El primer participante que aparece en la lista es el ultimo insertado.
+    $dql = "SELECT p.id, p.equipoLocal, p.equipoVisitante, IDENTITY(p.fecha) as fecha, pp.imagePath as imagenEL, ppp.imagePath as imagenEV
+            FROM IAWTorneoBundle:Partido p, IAWParticipanteBundle:Participante pp, IAWParticipanteBundle:Participante ppp
+            WHERE p.equipoLocal = pp.name  AND p.equipoVisitante = ppp.name AND p.golesEquipoLocal IS NOT NULL
+            ORDER BY p.fecha ASC"; //Me tira error al ordenar por fecha...
+
+    //Ejecuto la consulta
+    $partidos = $em->createQuery($dql)->getResult();
+
+    /*Aplico la paginacion con:
+          * la consulta ejecutada,
+          * empieza desde la pagina 1,
+          * y muestro 10 partidos por pagina
+    */
+
+    $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('partidos' => $partidos));
+
+  }
+
+
 
   public function editAction($id){
 
@@ -95,124 +160,133 @@ class PartidoController extends Controller
 
     if($form->isSubmitted() && $form->isValid()){
 
+
       $equipoLocal = $form->get('equipoLocal')->getData();
       $equipoVisitante = $form->get('equipoVisitante')->getData();
       $golesEquipoLocal = $form->get('golesEquipoLocal')->getData();
       $golesEquipoVisitante = $form->get('golesEquipoVisitante')->getData();
 
-      if($golesEquipoLocal == $golesEquipoVisitante){
-        $puntajeLocal = $em->getRepository('IAWParticipanteBundle:Puntaje')->find($equipoLocal);
-        $puntajeVisitante= $em->getRepository('IAWParticipanteBundle:Puntaje')->find($equipoVisitante);
+      $puntajeLocal = $em->getRepository('IAWParticipanteBundle:Puntaje')->createQueryBuilder('p')
+                      ->where('p.equipo = :equipo')
+                      ->setParameter('equipo',$equipoLocal)
+                      ->getQuery()
+                      ->getResult();
+      $puntajeVisitante = $em->getRepository('IAWParticipanteBundle:Puntaje')->createQueryBuilder('p')
+                      ->where('p.equipo = :equipo')
+                      ->setParameter('equipo',$equipoVisitante)
+                      ->getQuery()
+                      ->getResult();
 
-        $pj = $puntajeLocal->getPj();
-        $pe = $puntajeLocal->getPe();
-        $Gf = $puntajeLocal->getGf();
-        $Gc = $puntajeLocal->getGc();
-        $Dg = $puntajeLocal->getDg();
+     if($golesEquipoLocal == $golesEquipoVisitante){
 
-        $puntajeLocal->setPj($pj++);
-        $puntajeLocal->setPe($pe++);
-        $puntajeLocal->setGf($gf + $golesEquipoLocal);
-        $puntajeLocal->setGc($gc + $golesEquipoVisitante);
+        $puntos = $puntajeLocal[0]->getPuntos();
+        $pj = $puntajeLocal[0]->getPj();
+        $pe = $puntajeLocal[0]->getPe();
+        $gf = $puntajeLocal[0]->getGf();
+        $gc = $puntajeLocal[0]->getGc();
 
-        $Gf = $puntajeLocal->getGf();
-        $Gc = $puntajeLocal->getGc();
+        $puntajeLocal[0]->setPuntos($puntos + 1);
+        $puntajeLocal[0]->setPj($pj + 1);
+        $puntajeLocal[0]->setPe($pe + 1);
+        $puntajeLocal[0]->setGf($gf + $golesEquipoLocal);
+        $puntajeLocal[0]->setGc($gc + $golesEquipoVisitante);
 
-        $puntajeLocal->setDg($gf- $gc);
+        $gf = $puntajeLocal[0]->getGf();
+        $gc = $puntajeLocal[0]->getGc();
 
-        $pj = $puntajeVisitante->getPj();
-        $pe = $puntajeVisitante->getPe();
-        $Gf = $puntajeVisitante->getGf();
-        $Gc = $puntajeVisitante->getGc();
-        $Dg = $puntajeVisitante->getDg();
+        $puntajeLocal[0]->setDg($gf- $gc);
 
-        $puntajeVisitante->setPj($pj++);
-        $puntajeVisitante->setPe($pe++);
-        $puntajeVisitante->setGf($gf + $golesEquipoVisitante);
-        $puntajeVisitante->setGc($gc + $golesEquipoLocal);
+        $puntos = $puntajeVisitante[0]->getPuntos();
+        $pj = $puntajeVisitante[0]->getPj();
+        $pe = $puntajeVisitante[0]->getPe();
+        $gf = $puntajeVisitante[0]->getGf();
+        $gc = $puntajeVisitante[0]->getGc();
 
-        $Gf = $puntajeVisitante->getGf();
-        $Gc = $puntajeVisitante->getGc();
+        $puntajeVisitante[0]->setPuntos($puntos + 1);
+        $puntajeVisitante[0]->setPj($pj + 1);
+        $puntajeVisitante[0]->setPe($pe + 1);
+        $puntajeVisitante[0]->setGf($gf + $golesEquipoVisitante);
+        $puntajeVisitante[0]->setGc($gc + $golesEquipoLocal);
 
-        $puntajeVisitante->setDg($gf- $gc);
+        $gf = $puntajeVisitante[0]->getGf();
+        $gc = $puntajeVisitante[0]->getGc();
+
+        $puntajeVisitante[0]->setDg($gf- $gc);
 
         $em->flush();
       }
       if($golesEquipoLocal > $golesEquipoVisitante){
-        $puntajeLocal = $em->getRepository('IAWParticipanteBundle:Puntaje')->find($equipoLocal);
-        $puntajeVisitante= $em->getRepository('IAWParticipanteBundle:Puntaje')->find($equipoVisitante);
 
-        $pj = $puntajeLocal->getPj();
-        $pg = $puntajeLocal->getPg();
-        $Gf = $puntajeLocal->getGf();
-        $Gc = $puntajeLocal->getGc();
-        $Dg = $puntajeLocal->getDg();
+        $puntos = $puntajeLocal[0]->getPuntos();
+        $pj = $puntajeLocal[0]->getPj();
+        $pg = $puntajeLocal[0]->getPg();
+        $gf = $puntajeLocal[0]->getGf();
+        $gc = $puntajeLocal[0]->getGc();
 
-        $puntajeLocal->setPj($pj++);
-        $puntajeLocal->setPg($pg++);
-        $puntajeLocal->setGf($gf + $golesEquipoLocal);
-        $puntajeLocal->setGc($gc + $golesEquipoVisitante);
+        $puntajeLocal[0]->setPuntos($puntos + 3);
+        $puntajeLocal[0]->setPj($pj + 1);
+        $puntajeLocal[0]->setPg($pg + 1);
+        $puntajeLocal[0]->setGf($gf + $golesEquipoLocal);
+        $puntajeLocal[0]->setGc($gc + $golesEquipoVisitante);
 
-        $Gf = $puntajeLocal->getGf();
-        $Gc = $puntajeLocal->getGc();
+        $gf = $puntajeLocal[0]->getGf();
+        $gc = $puntajeLocal[0]->getGc();
 
-        $puntajeLocal->setDg($gf- $gc);
+        $puntajeLocal[0]->setDg($gf- $gc);
 
-        $pj = $puntajeVisitante->getPj();
-        $pp = $puntajeVisitante->getPp();
-        $Gf = $puntajeVisitante->getGf();
-        $Gc = $puntajeVisitante->getGc();
-        $Dg = $puntajeVisitante->getDg();
+        $pj = $puntajeVisitante[0]->getPj();
+        $pp = $puntajeVisitante[0]->getPp();
+        $gf = $puntajeVisitante[0]->getGf();
+        $gc = $puntajeVisitante[0]->getGc();
+        $Dg = $puntajeVisitante[0]->getDg();
 
-        $puntajeVisitante->setPj($pj++);
-        $puntajeVisitante->setPp($pp++);
-        $puntajeVisitante->setGf($gf + $golesEquipoVisitante);
-        $puntajeVisitante->setGc($gc + $golesEquipoLocal);
+        $puntajeVisitante[0]->setPj($pj + 1);
+        $puntajeVisitante[0]->setPp($pp + 1);
+        $puntajeVisitante[0]->setGf($gf + $golesEquipoVisitante);
+        $puntajeVisitante[0]->setGc($gc + $golesEquipoLocal);
 
-        $Gf = $puntajeVisitante->getGf();
-        $Gc = $puntajeVisitante->getGc();
+        $gf = $puntajeVisitante[0]->getGf();
+        $gc = $puntajeVisitante[0]->getGc();
 
-        $puntajeVisitante->setDg($gf- $gc);
+        $puntajeVisitante[0]->setDg($gf- $gc);
 
         $em->flush();
 
 
       }
       if($golesEquipoLocal < $golesEquipoVisitante){
-        $puntajeLocal = $em->getRepository('IAWParticipanteBundle:Puntaje')->find($equipoLocal);
-        $puntajeVisitante= $em->getRepository('IAWParticipanteBundle:Puntaje')->find($equipoVisitante);
 
-        $pj = $puntajeLocal->getPj();
-        $pp = $puntajeLocal->getPp();
-        $Gf = $puntajeLocal->getGf();
-        $Gc = $puntajeLocal->getGc();
-        $Dg = $puntajeLocal->getDg();
+        $pj = $puntajeLocal[0]->getPj();
+        $pp = $puntajeLocal[0]->getPp();
+        $gf = $puntajeLocal[0]->getGf();
+        $gc = $puntajeLocal[0]->getGc();
 
-        $puntajeLocal->setPj($pj++);
-        $puntajeLocal->setPp($pp++);
-        $puntajeLocal->setGf($gf + $golesEquipoLocal);
-        $puntajeLocal->setGc($gc + $golesEquipoVisitante);
+        $puntajeLocal[0]->setPj($pj + 1);
+        $puntajeLocal[0]->setPp($pp + 1);
+        $puntajeLocal[0]->setGf($gf + $golesEquipoLocal);
+        $puntajeLocal[0]->setGc($gc + $golesEquipoVisitante);
 
-        $Gf = $puntajeLocal->getGf();
-        $Gc = $puntajeLocal->getGc();
+        $gf = $puntajeLocal[0]->getGf();
+        $gc = $puntajeLocal[0]->getGc();
 
-        $puntajeLocal->setDg($gf- $gc);
+        $puntajeLocal[0]->setDg($gf- $gc);
 
-        $pj = $puntajeVisitante->getPj();
-        $pg = $puntajeVisitante->getPg();
-        $Gf = $puntajeVisitante->getGf();
-        $Gc = $puntajeVisitante->getGc();
-        $Dg = $puntajeVisitante->getDg();
+        $puntos = $puntajeVisitante[0]->getPuntos();
+        $pj = $puntajeVisitante[0]->getPj();
+        $pg = $puntajeVisitante[0]->getPg();
+        $gf = $puntajeVisitante[0]->getGf();
+        $gc = $puntajeVisitante[0]->getGc();
 
-        $puntajeVisitante->setPj($pj++);
-        $puntajeVisitante->setPg($pg++);
-        $puntajeVisitante->setGf($gf + $golesEquipoVisitante);
-        $puntajeVisitante->setGc($gc + $golesEquipoLocal);
+        $puntajeVisitante[0]->setPuntos($puntos + 3);
+        $puntajeVisitante[0]->setPj($pj + 1);
+        $puntajeVisitante[0]->setPg($pg + 1);
+        $puntajeVisitante[0]->setGf($gf + $golesEquipoVisitante);
+        $puntajeVisitante[0]->setGc($gc + $golesEquipoLocal);
 
-        $Gf = $puntajeVisitante->getGf();
-        $Gc = $puntajeVisitante->getGc();
+        $gf = $puntajeVisitante[0]->getGf();
+        $gc = $puntajeVisitante[0]->getGc();
 
-        $puntajeVisitante->setDg($gf- $gc);
+        $puntajeVisitante[0]->setDg($gf- $gc);
 
         $em->flush();
 
@@ -234,7 +308,7 @@ class PartidoController extends Controller
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
     //En caso de algun problema, renderizo el formulario
-    return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'partido', 'form' => $form->createView()));
+    return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'partido' => $partido, 'form' => $form->createView()));
   }
 
 
