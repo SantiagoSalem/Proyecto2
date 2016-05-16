@@ -97,8 +97,10 @@ class PartidoController extends Controller
     */
 
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+    $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+    $cantTorneo = $em->createQuery($dql)->getResult();
 
-    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('logInUser' => $logInUser,'partidos' => $partidos));
+    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'partidos' => $partidos));
 
   }
 
@@ -146,8 +148,10 @@ class PartidoController extends Controller
     */
 
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+    $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+    $cantTorneo = $em->createQuery($dql)->getResult();
 
-    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('partidos' => $partidos));
+    return $this->render('IAWTorneoBundle:Partido:index.html.twig', array('cantTorneo' => $cantTorneo,'partidos' => $partidos));
 
   }
 
@@ -195,8 +199,10 @@ class PartidoController extends Controller
     */
 
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+    $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+    $cantTorneo = $em->createQuery($dql)->getResult();
 
-    return $this->render('IAWTorneoBundle:Partido:resultados.html.twig', array('partidos' => $partidos));
+    return $this->render('IAWTorneoBundle:Partido:resultados.html.twig', array('cantTorneo' => $cantTorneo,'partidos' => $partidos));
 
   }
 
@@ -215,8 +221,10 @@ class PartidoController extends Controller
     $form = $this->createEditForm($partido);
 
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+    $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+    $cantTorneo = $em->createQuery($dql)->getResult();
 
-    return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'partido' => $partido,'form' => $form->createView()));
+    return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'partido' => $partido,'form' => $form->createView()));
   }
 
   private function createEditForm(Partido $entidad){
@@ -408,9 +416,10 @@ class PartidoController extends Controller
       return $this->redirectToRoute('iaw_partido_index');
     }
     $logInUser = $this->get('security.token_storage')->getToken()->getUser();
-
+    $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+    $cantTorneo = $em->createQuery($dql)->getResult();
     //En caso de algun problema, renderizo el formulario
-    return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'partido' => $partido, 'form' => $form->createView()));
+    return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'partido' => $partido, 'form' => $form->createView()));
   }
 
 

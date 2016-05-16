@@ -38,8 +38,10 @@ class JugadorController extends Controller
       $deleteFormAjax = $this->createCustomForm(':PARTICIPANTE_ID', 'DELETE', 'iaw_participante_delete');
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
 
-      return $this->render('IAWParticipanteBundle:Participante:index.html.twig', array('logInUser' => $logInUser,'pagination' => $pagination,
+      return $this->render('IAWParticipanteBundle:Participante:index.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'pagination' => $pagination,
           'delete_form_ajax' => $deleteFormAjax->createView()));
     }
 
@@ -63,10 +65,12 @@ class JugadorController extends Controller
       $form = $this->createCreateForm($participanteID, $jugador);
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
 
 
 
-      return $this->render('IAWParticipanteBundle:Jugador:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Jugador:add.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'form' => $form->createView()));
 
     }
 
@@ -135,9 +139,10 @@ class JugadorController extends Controller
         return $this->redirectToRoute('iaw_participante_index');
       }
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
-
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
 
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWParticipanteBundle:Jugador:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Jugador:add.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'form' => $form->createView()));
     }
   }

@@ -42,7 +42,11 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fixture <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{ path('iaw_torneo_index') }}">Lista de fixtures</a></li>
+            {% if cantTorneo[0].nro == 0 %}
             <li><a href="{{ path('iaw_torneo_add') }}">Nuevo fixture</a></li>
+            {% elseif cantTorneo[0].nro == 1 %}
+            <li><a href="#" style="color:grey" >Nuevo fixture</a></li>
+            {% endif %}
           </ul>
         </li>
       </ul>

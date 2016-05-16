@@ -38,7 +38,10 @@ class TorneoController extends Controller
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-      return $this->render('IAWTorneoBundle:Torneo:index.html.twig', array('logInUser' => $logInUser,'torneos' => $torneos));
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWTorneoBundle:Torneo:index.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'torneos' => $torneos));
     }
 
 
@@ -53,7 +56,10 @@ class TorneoController extends Controller
       //Ejecuto la consulta
       $estadisticas = $em->createQuery($dql)->getResult();
 
-      return $this->render('IAWTorneoBundle:Estadisticas:index.html.twig', array('estadisticas' => $estadisticas));
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWTorneoBundle:Estadisticas:index.html.twig', array('cantTorneo' => $cantTorneo,'estadisticas' => $estadisticas));
 
 
     }
@@ -65,7 +71,10 @@ class TorneoController extends Controller
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-      return $this->render('IAWTorneoBundle:Torneo:add.html.twig', array('logInUser' => $logInUser,
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWTorneoBundle:Torneo:add.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,
                             'form' => $form->createView()));
 
 
@@ -209,8 +218,10 @@ class TorneoController extends Controller
 
       }
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWFixtureBundle:Fixture:add.html.twig', array('logInUser' => $logInUser, 'form' => $form->createView()));
+      return $this->render('IAWFixtureBundle:Fixture:add.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo, 'form' => $form->createView()));
     }
 
 

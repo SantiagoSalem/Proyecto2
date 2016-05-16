@@ -25,6 +25,9 @@ class UserController extends Controller
       //Obtengo el usuario logueado
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
 
       /*Aplico la paginacion con:
             * la consulta ejecutada,
@@ -38,7 +41,7 @@ class UserController extends Controller
 
       $deleteFormAjax = $this->createCustomForm(':USER_ID', 'DELETE', 'iaw_user_delete');
 
-      return $this->render('IAWUserBundle:User:index.html.twig', array('logInUser' => $logInUser, 'pagination' => $pagination,
+      return $this->render('IAWUserBundle:User:index.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo, 'pagination' => $pagination,
           'delete_form_ajax' => $deleteFormAjax->createView()));
     }
 
@@ -52,8 +55,13 @@ class UserController extends Controller
       $form = $this->createCreateForm($user);
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $em = $this->getDoctrine()->getManager();
 
-      return $this->render('IAWUserBundle:User:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWUserBundle:User:add.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo, 'form' => $form->createView()));
 
     }
 
@@ -128,8 +136,14 @@ class UserController extends Controller
         }
       }
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $em = $this->getDoctrine()->getManager();
+
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWUserBundle:User:add.html.twig', array('logInUser' => $logInUser, 'form' => $form->createView()));
+      return $this->render('IAWUserBundle:User:add.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo, 'form' => $form->createView()));
     }
 
     /*****************************
@@ -156,8 +170,13 @@ class UserController extends Controller
       $deleteForm = $this->createCustomForm($user->getId(), 'DELETE', 'iaw_user_delete');
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $em = $this->getDoctrine()->getManager();
 
-      return $this->render('IAWUserBundle:User:view.html.twig', array('logInUser' => $logInUser,'user' => $user,'delete_form' => $deleteForm->createView()));
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWUserBundle:User:view.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo, 'user' => $user,'delete_form' => $deleteForm->createView()));
 
     }
 
@@ -257,7 +276,11 @@ class UserController extends Controller
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-      return $this->render('IAWUserBundle:User:edit.html.twig', array('logInUser' => $logInUser,'user' => $user,'form' => $form->createView()));
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWUserBundle:User:edit.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo,'user' => $user,'form' => $form->createView()));
     }
 
     private function createEditForm(User $entidad){
@@ -332,8 +355,11 @@ class UserController extends Controller
       }
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+
+      $cantTorneo = $em->createQuery($dql)->getResult();
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWUserBundle:User:edit.html.twig', array('logInUser' => $logInUser,'user', 'form' => $form->createView()));
+      return $this->render('IAWUserBundle:User:edit.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo, 'user', 'form' => $form->createView()));
     }
 
     /*****************************

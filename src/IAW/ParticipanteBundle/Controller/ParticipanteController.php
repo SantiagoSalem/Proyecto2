@@ -37,7 +37,10 @@ class ParticipanteController extends Controller
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-      return $this->render('IAWParticipanteBundle:Participante:index.html.twig', array('logInUser' => $logInUser,'pagination' => $pagination,
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWParticipanteBundle:Participante:index.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo, 'pagination' => $pagination,
           'delete_form_ajax' => $deleteFormAjax->createView()));
     }
 
@@ -52,7 +55,11 @@ class ParticipanteController extends Controller
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
+      $em = $this->getDoctrine()->getManager();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo, 'form' => $form->createView()));
 
     }
 
@@ -107,10 +114,11 @@ class ParticipanteController extends Controller
         return $this->redirectToRoute('iaw_participante_index');
       }
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
-
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
 
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('logInUser' => $logInUser,'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:add.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo,'form' => $form->createView()));
     }
 
     /*****************************
@@ -145,8 +153,10 @@ class ParticipanteController extends Controller
       $deleteForm = $this->createCustomForm($participante->getId(), 'DELETE', 'iaw_participante_delete');
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
 
-      return $this->render('IAWParticipanteBundle:Participante:view.html.twig',array('logInUser' => $logInUser,'participante' => $participante, 'jugadores' => $jugadores ,'delete_form' => $deleteForm->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:view.html.twig',array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'participante' => $participante, 'jugadores' => $jugadores ,'delete_form' => $deleteForm->createView()));
 
     }
 
@@ -229,9 +239,11 @@ class ParticipanteController extends Controller
       $form = $this->createEditForm($participante);
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
 
 
-      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'participante' => $participante,'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'participante' => $participante,'form' => $form->createView()));
     }
 
     private function createEditForm(Participante $entidad){
@@ -276,9 +288,10 @@ class ParticipanteController extends Controller
         return $this->redirectToRoute('iaw_participante_edit', array('id' => $participante->getId()));
       }
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
-
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'participante', 'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'participante', 'form' => $form->createView()));
     }
 
     /*****************************
