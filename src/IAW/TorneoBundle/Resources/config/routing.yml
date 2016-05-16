@@ -16,6 +16,10 @@ iaw_torneo_create:
     defaults: { _controller: IAWTorneoBundle:Torneo:create }
     methods: POST
 
+iaw_torneo_eliminar:
+    path: /participante/eliminar/{id}
+    defaults: { _controller: IAWTorneoBundle:Torneo:eliminar }
+
 iaw_torneo_estadisticas:
     path: /estadisticas
     defaults: { _controller: IAWTorneoBundle:Torneo:estadisticas }

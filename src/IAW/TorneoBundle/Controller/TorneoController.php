@@ -70,6 +70,7 @@ class TorneoController extends Controller
       $form = $this->createCreateForm($fixture);
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+      $em = $this->getDoctrine()->getManager();
 
       $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
       $cantTorneo = $em->createQuery($dql)->getResult();
@@ -222,6 +223,51 @@ class TorneoController extends Controller
       $cantTorneo = $em->createQuery($dql)->getResult();
       //En caso de algun problema, renderizo el formulario
       return $this->render('IAWFixtureBundle:Fixture:add.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo, 'form' => $form->createView()));
+    }
+
+    public function eliminarAction($id){
+
+
+
+      $em = $this->getDoctrine()->getManager();
+      $dql = 'SET FOREIGN_KEY_CHECKS=0;';
+      $connection = $em->getConnection();
+      $stmt = $connection->prepare($dql);
+      $stmt->execute();
+      $stmt->closeCursor();
+
+      $dql = 'TRUNCATE TABLE partido;';
+      $connection = $em->getConnection();
+      $stmt = $connection->prepare($dql);
+      $stmt->execute();
+      $stmt->closeCursor();
+
+      $dql = 'TRUNCATE TABLE fecha_torneo;';
+      $connection = $em->getConnection();
+      $stmt = $connection->prepare($dql);
+      $stmt->execute();
+      $stmt->closeCursor();
+
+      $dql = 'TRUNCATE TABLE puntaje;';
+      $connection = $em->getConnection();
+      $stmt = $connection->prepare($dql);
+      $stmt->execute();
+      $stmt->closeCursor();
+
+      $dql = 'TRUNCATE TABLE torneo;';
+      $connection = $em->getConnection();
+      $stmt = $connection->prepare($dql);
+      $stmt->execute();
+      $stmt->closeCursor();
+
+      $dql = 'SET FOREIGN_KEY_CHECKS=1;';
+      $connection = $em->getConnection();
+      $stmt = $connection->prepare($dql);
+      $stmt->execute();
+      $stmt->closeCursor();
+
+
+      return $this->redirectToRoute('iaw_torneo_index');
     }
 
 
