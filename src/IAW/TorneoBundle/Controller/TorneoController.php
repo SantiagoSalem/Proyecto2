@@ -25,7 +25,7 @@ class TorneoController extends Controller
       $em = $this->getDoctrine()->getManager();
 
       //El primer participante que aparece en la lista es el ultimo insertado.
-      $dql = "SELECT t FROM IAWTorneoBundle:Torneo t"; //Me tira error al ordenar por fecha...
+      $dql = "SELECT t.id, t.nombreTorneo, DATE_FORMAT(t.fechaInicio, '%d-%m-%Y') as dia FROM IAWTorneoBundle:Torneo t"; //Me tira error al ordenar por fecha...
 
       //Ejecuto la consulta
       $torneos = $em->createQuery($dql)->getResult();
@@ -110,7 +110,6 @@ class TorneoController extends Controller
           //Editores habilitados
           $editores = $em->createQuery($dql)->getResult();
 
-          var_dump($editores);
 
           //Obtengo la fecha que se ingreso en el formulario
           $fechaInicio = $form->get('fechaInicio')->getData();
@@ -123,6 +122,8 @@ class TorneoController extends Controller
             $fecha_torneo = new FechaTorneo();
             $fecha_torneo->setDate($fechaDelPartido);
             $fecha_torneo->setTorneo($torneo);
+            $fecha_torneo->setNroFecha($i + 1);
+
 
             array_push($fechasArr,$fecha_torneo);
 

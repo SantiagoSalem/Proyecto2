@@ -8,8 +8,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+      <a class="navbar-brand">Fixture!</a>
+      {% elseif is_granted('IS_AUTHENTICATED_ANONYMOUSLY')  %}
       <a class="navbar-brand" href="/">Fixture!</a>
-
+      {% endif %}
     </div>
 
 

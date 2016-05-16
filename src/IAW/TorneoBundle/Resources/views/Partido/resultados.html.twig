@@ -1,0 +1,101 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+  {{ parent() }}
+  <br />
+  <div class="container">
+    <div class="col-md-12">
+      <div class="page-header margin-none">
+        <h2 class="padding-none">Partidos</h2>
+      </div>
+
+
+              {% for partido in partidos %}
+                  <tr data-id="{{ partido.id }}">
+
+                    {% if loop.first %}
+                    <div class="well well-sm" id="wellFecha">{{'Fecha ' ~ partido.nroFecha}}</div>
+                    <div class="table-responsive">
+                      <table class="table table-hover" id="tablaAjustada">
+                        <thead>
+                            <tr>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {# Aca va la fila con todo lo que va despues#}
+
+                    {% elseif  partidos[loop.index0 - 1].nroFecha == partido.nroFecha %}
+                      {# Insertar una fila mas, no hay cambios#}
+
+
+                    {% elseif partidos[loop.index0 - 1].nroFecha != partido.nroFecha %}
+                      {# Cambio de fecha, cierro la tabla anterior y abro una nueva #}
+                      </tbody>
+                    </table>
+                  </div>
+                    {% set nroFecha = nroFecha + 1 %}
+                    <div class="well well-sm" id="wellFecha">{{'Fecha ' ~ partido.nroFecha}}</div>
+                    <div class="table-responsive">
+                      <table class="table table-hover" id="tablaAjustada">
+                        <thead>
+                          <tr>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                    {% endif %}
+
+
+                      <td style="text-align: left;">
+                        {{partido.dia ~ ' ' ~ partido.nroDia ~ ' de ' ~ partido.mes}}
+                      </td>
+
+
+
+                      <td style="text-align: right;">{{partido.equipoLocal}}
+                       {% if partido.imagenEL != '' %}
+                            <img src="{{ asset('uploads/' ~ partido.imagenEL) }}" style="width:30px;height:30px;" />
+                        {% else %}
+                            <img src="{{ asset('uploads/noImage.png') }}" style="width:30px;height:30px;" />
+                        {% endif %}
+
+                      </td>
+
+
+                      <td style="text-align: center;">
+                        {{ partido.golesEquipoLocal ~ ' - ' ~ partido.golesEquipoVisitante}}
+                      </td>
+
+                      <td style="text-align: left;">
+                       {% if partido.imagenEV != '' %}
+                            <img src="{{ asset('uploads/' ~ partido.imagenEV) }}" style="width:30px;height:30px;" />
+                        {% else %}
+                            <img src="{{ asset('uploads/noImage.png') }}" style="width:30px;height:30px;" />
+                        {% endif %}
+                        {{partido.equipoVisitante}}
+                      </td>
+
+                      {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
+                      <td class="actions">
+                        <a href="{{ path('iaw_partido_edit', {id: partido.id}) }}" class="btn btn-sm btn-info">
+                          Editar
+                        </a>
+                      </td>
+                      {% endif %}
+
+                      {% if loop.last %}
+                        {# Cierro el tag de la ultima tabla#}
+                          </tbody>
+                        </table>
+                      </div>
+                      {% endif %}
+
+
+                  </tr>
+              {% endfor %}
+
+      </div>
+    </div>
+
+{% endblock %}

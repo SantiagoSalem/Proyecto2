@@ -29,6 +29,13 @@ class FechaTorneo
      */
     private $date;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nroFecha", type="integer")
+     */
+    private $nroFecha;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Torneo", inversedBy="fechas")
@@ -64,6 +71,18 @@ class FechaTorneo
     public function setDate($date)
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getNroFecha()
+    {
+        return $this->nroFecha;
+    }
+
+    public function setNroFecha($nroFecha)
+    {
+        $this->nroFecha = $nroFecha;
 
         return $this;
     }

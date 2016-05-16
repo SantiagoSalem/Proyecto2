@@ -13,11 +13,21 @@
             {{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
               <h4 class="text-danger">{{ form_errors(form)  }} </h4>
 
+              {% if is_granted('ROLE_ADMIN') %}
               <div class="form-group">
                   {{ form_label(form.equipoLocal) }}
                   {{ form_widget(form.equipoLocal,{ 'attr' : {'class' : 'form-control'} }) }}
                   <span class="text-danger"> {{ form_errors(form.equipoLocal) }}</span>
               </div>
+              {% endif %}
+
+              {% if is_granted('ROLE_EDITOR') %}
+              <div class="form-group">
+                  {{ form_label(form.equipoLocal) }}
+                  {{ form_widget(form.equipoLocal,{ 'attr' : {'class' : 'form-control'} }) }}
+                  <span class="text-danger"> {{ form_errors(form.equipoLocal) }}</span>
+              </div>
+              {% endif %}
 
               <div class="form-group">
                   {{ form_label(form.golesEquipoLocal) }}
@@ -25,17 +35,37 @@
                   <span class="text-danger"> {{ form_errors(form.golesEquipoLocal) }}</span>
               </div>
 
+              {% if is_granted('ROLE_ADMIN') %}
               <div class="form-group">
                   {{ form_label(form.equipoVisitante) }}
                   {{ form_widget(form.equipoVisitante,{ 'attr' : {'class' : 'form-control'} }) }}
                   <span class="text-danger"> {{ form_errors(form.equipoVisitante) }}</span>
               </div>
+              {% endif %}
+
+              {% if is_granted('ROLE_EDITOR') %}
+              <div class="form-group">
+                  {{ form_label(form.equipoVisitante) }}
+                  {{ form_widget(form.equipoVisitante,{ 'attr' : {'class' : 'form-control'} }) }}
+                  <span class="text-danger"> {{ form_errors(form.equipoVisitante) }}</span>
+              </div>
+              {% endif %}
 
               <div class="form-group">
                   {{ form_label(form.golesEquipoVisitante) }}
                   {{ form_widget(form.golesEquipoVisitante,{ 'attr' : {'class' : 'form-control'} }) }}
                   <span class="text-danger"> {{ form_errors(form.golesEquipoVisitante) }}</span>
               </div>
+
+              {% if is_granted('ROLE_ADMIN') %}
+              <div class="form-group">
+                  {{ form_label(form.editor) }}
+                  {{ form_widget(form.editor,{ 'attr' : {'class' : 'form-control'}}) }}
+                  <span class="text-danger"> {{ form_errors(form.editor) }}</span>
+              </div>
+              {% endif %}
+
+
               <p>
 
                 {{ form_widget(form.save, {'label' : 'Guardar resultado', 'attr': {'class': 'btn btn-success'}})  }}

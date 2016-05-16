@@ -9,57 +9,52 @@
         <h2 class="padding-none">Partidos</h2>
       </div>
 
-
-              {% set nroFecha = 1 %}
               {% for partido in partidos %}
-                  <tr data-id="{{ partido.id }}">
 
                     {% if loop.first %}
-                    <div class="well well-sm" id="wellFecha">{{'Fecha ' ~ nroFecha }}</div>
+                    <div class="well well-sm" id="wellFecha">{{'Fecha ' ~ partido.nroFecha}}</div>
                     <div class="table-responsive">
-                      <table class="table table-hover" id="tablaAjustada">
+                      <table class="table table-hover" >
                         <thead>
                             <tr>
-                              <th>Local</th>
-                              <th>Visitante</th>
-                              {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
-                              <th>Accion</th>
-                              {% endif %}
+
                             </tr>
                         </thead>
                         <tbody>
+                          <tr data-id="{{ partido.id }}">
                           {# Aca va la fila con todo lo que va despues#}
 
-                    {% elseif  partidos[loop.index0 - 1].fecha == partido.fecha %}
+                    {% elseif  partidos[loop.index0 - 1].nroFecha == partido.nroFecha %}
                       {# Insertar una fila mas, no hay cambios#}
+                      </tr>
+                      <tr data-id="{{ partido.id }}">
 
 
-                    {% elseif partidos[loop.index0 - 1].fecha != partido.fecha %}
+                    {% elseif partidos[loop.index0 - 1].nroFecha != partido.nroFecha %}
                       {# Cambio de fecha, cierro la tabla anterior y abro una nueva #}
-                      </tbody>
-                    </table>
-                  </div>
-                    {% set nroFecha = nroFecha + 1 %}
-                    <div class="well well-sm" id="wellFecha">{{'Fecha ' ~ nroFecha }}</div>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="well well-sm" id="wellFecha">{{'Fecha ' ~ partido.nroFecha}}</div>
                     <div class="table-responsive">
-                      <table class="table table-hover" id="tablaAjustada">
+                      <table class="table table-hover">
                         <thead>
                           <tr>
-                            <th>Local</th>
-                            <th>Visitante</th>
-                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
-                            <th>Accion</th>
-                            {% endif %}
                           </tr>
                         </thead>
                         <tbody>
+                        <tr data-id="{{ partido.id }}">
+
                     {% endif %}
 
 
+                    <td style="text-align: left;">
+                      {{partido.dia ~ ' ' ~ partido.nroDia ~ ' de ' ~ partido.mes}}
+                    </td>
 
 
-
-                      <td>{{partido.equipoLocal}}
+                      <td style="text-align: right;">{{partido.equipoLocal}}
                        {% if partido.imagenEL != '' %}
                             <img src="{{ asset('uploads/' ~ partido.imagenEL) }}" style="width:30px;height:30px;" />
                         {% else %}
@@ -67,7 +62,12 @@
                         {% endif %}
                       </td>
 
-                      <td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+
+
+                      <td style="text-align: left;">
                        {% if partido.imagenEV != '' %}
                             <img src="{{ asset('uploads/' ~ partido.imagenEV) }}" style="width:30px;height:30px;" />
                         {% else %}
@@ -75,6 +75,13 @@
                         {% endif %}
                         {{partido.equipoVisitante}}
                       </td>
+
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
 
                       {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
                       <td class="actions">
@@ -86,13 +93,15 @@
 
                       {% if loop.last %}
                         {# Cierro el tag de la ultima tabla#}
+                      </tr>
+
                           </tbody>
                         </table>
                       </div>
                       {% endif %}
 
 
-                  </tr>
+
               {% endfor %}
 
       </div>

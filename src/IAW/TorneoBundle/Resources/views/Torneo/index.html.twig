@@ -22,7 +22,7 @@
               {% for torneo in torneos %}
                   <tr data-id="{{ torneo.id }}">
                       <td>{{torneo.nombreTorneo}}</td>
-
+                      <td>{{torneo.dia}}</td>
                       <td class="actions">
                         <a href="{{ path('iaw_partido_index') }}" class="btn btn-sm btn-info">
                           Ver partidos
