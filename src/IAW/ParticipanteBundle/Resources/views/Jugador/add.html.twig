@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+      {{ parent() }}
+      <br />
+      <div class="main container">
+        <div class="row well">
+          <div class="col-md-6">
+            <div class="page-header">
+              <h2>Nuevo jugador</h2>
+            </div>
+            {{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+
+            <div class="form-group">
+                {{ form_label(form.nombre, 'Nombre') }}
+                {{ form_widget(form.nombre,{ 'attr' : {'class' : 'form-control'} }) }}
+                <span class="text-danger"> {{ form_errors(form.nombre) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.apellido, 'Apellido') }}
+                {{ form_widget(form.apellido,{ 'attr' : {'class' : 'form-control'}}) }}
+                <span class="text-danger"> {{ form_errors(form.apellido) }}</span>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.imagen,'Foto') }}
+                {{ form_widget(form.imagen,{ 'attr' : {'class' : 'form-control'}}) }}
+                <span class="text-danger"> {{ form_errors(form.imagen) }}</span>
+            </div>
+
+            <p>
+
+              {{ form_widget(form.save, {'label' : 'Crear jugador', 'attr': {'class': 'btn btn-success'}})  }}
+            </p>
+
+
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+{% endblock %}

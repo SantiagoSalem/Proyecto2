@@ -133,11 +133,20 @@ class ParticipanteController extends Controller
         throw $this->createNotFoundException('Participante no encontrado');
       }
 
+      $em = $this->getDoctrine()->getManager();
+
+
+      $jugadores = $em->getRepository('IAWParticipanteBundle:Jugador')->createQueryBuilder('j')
+                      ->where('j.participanteID = :id')
+                      ->setParameter('id',$id)
+                      ->getQuery()
+                      ->getResult();
+
       $deleteForm = $this->createCustomForm($participante->getId(), 'DELETE', 'iaw_participante_delete');
 
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
 
-      return $this->render('IAWParticipanteBundle:Participante:view.html.twig',array('logInUser' => $logInUser,'participante' => $participante,'delete_form' => $deleteForm->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:view.html.twig',array('logInUser' => $logInUser,'participante' => $participante, 'jugadores' => $jugadores ,'delete_form' => $deleteForm->createView()));
 
     }
 

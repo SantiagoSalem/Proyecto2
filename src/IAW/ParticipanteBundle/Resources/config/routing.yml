@@ -32,6 +32,17 @@ iaw_participante_delete:
     path: /participante/delete/{id}
     defaults: { _controller: IAWParticipanteBundle:Participante:delete }
 
+
+iaw_jugador_add:
+    path: /jugador/add/{participanteID}
+    defaults: { _controller: IAWParticipanteBundle:Jugador:add }
+
+iaw_jugador_create:
+    path: /jugador/create/{participanteID}
+    defaults: { _controller: IAWParticipanteBundle:Jugador:create }
+    methods:  POST
+
+
 # Si se trata ingresar por url directo a /participante/create,
 # luego se redirecciona a /participante/add.
 iaw_participante_redirect_add:

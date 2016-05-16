@@ -50,6 +50,21 @@
 				</dl>
 			</div>
 		</div>
+		<div class="row">
+				<div class="col-md-12">
+					<dl>
+						<dt><h3>Plantel</h3></dt>
+						<dd>
+							{% for jugador in jugadores %}
+								<img src="{{ asset('uploads/' ~ jugador.imagen) }}"/>
+							{% endfor %}
+
+						</dd>
+					</dl>
+				</div>
+		</div>
+
+
 	</div>
 
 {% endblock %}
