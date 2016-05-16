@@ -15,7 +15,7 @@
               <tr>
                   <th> {{knp_pagination_sortable(pagination, 'Nombre', 'p.name') }}</th>
                   <th> {{knp_pagination_sortable(pagination, 'Miembros', 'p.members') }}</th>
-                  <th> Escudo</th>
+                  <th style="width: 200px;"> Escudo</th>
                   <th>Acciones</th>
               </tr>
           </thead>
@@ -43,7 +43,7 @@
                           Eliminar
                         </a>
                         <a href="{{ path('iaw_jugador_add', {participanteID: participante.id}) }}" class="btn btn-sm btn-info">
-                           Jugador
+                           Agregar jugador
                         </a>
                         {% endif %}
 
