@@ -5,7 +5,6 @@
 	<br />
 	<div class="container well">
 		<div class="row">
-	    <div class="col-md-12">
 				<dl>
 					<div class="col-md-3">
 					</div>
@@ -17,37 +16,36 @@
 					<div class="col-md-4">
 					</div>
 				</dl>
-			</div>
-			<div class="col-md-5">
-			</div>
-			<div class="col-md-2" style="text-align=center";>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
 				<dl>
 					<dt><h2>Local</h2></dt>
 					<dd>
 							<div class="text-muted" style="font-size:21px;">{{ partido.golesEquipoLocal }}</div>
 					</dd>
-
-					<dt><h2>Visitante</h2></dt>
-					<dd>
-							<div class="text-muted" style="font-size:21px">{{ partido.golesEquipoVisitante }}</div>
-					</dd>
-				</dl>
-			</div>
-			<div class="col-md-5">
 			</div>
 		</div>
-		<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<dl>
+					<dt><h2>Visitante</h2></dt>
+					<dd>
+							<div class="text-muted" style="font-size:21px;">{{ partido.golesEquipoVisitante }}</div>
+					</dd>
+			</div>
+		</div>
 			<div class="row">
 				<div class="col-md-12">
 					<dl>
-						<dt><h1><span class="pull-center">Descripcion</span></h1></dt>
+						<dt><h1>Descripcion</h1></dt>
 						<dd>
-								<span class="text-muted pull-center" style="font-size:21px;">{{ partido.descripcion }}</span>
+								<div class="text-muted" style="font-size:21px;">{{ partido.descripcion }}</div>
 						</dd>
 					</dl>
 				</div>
 			</div>
-		</div>
 	</div>
+
 
 {% endblock %}

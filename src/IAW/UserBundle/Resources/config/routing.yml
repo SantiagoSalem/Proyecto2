@@ -36,7 +36,11 @@ iaw_user_delete:
 iaw_user_afterLogin:
     path: /login/after/
     defaults: { _controller: IAWUserBundle:User:afterLogin }
-    
+
+iaw_user_autores:
+    path: /autores
+    defaults: { _controller: IAWUserBundle:User:autores }
+
 
 
 # Si se trata ingresar por url directo a /user/create,

@@ -405,4 +405,16 @@ class UserController extends Controller
       return $passwordBD;
     }
 
+    public function autoresAction(){
+
+      $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+
+      $em = $this->getDoctrine()->getManager();
+      $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+      $cantTorneo = $em->createQuery($dql)->getResult();
+
+      return $this->render('IAWUserBundle:User:autores.html.twig', array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo,));
+
+    }
+
 }
