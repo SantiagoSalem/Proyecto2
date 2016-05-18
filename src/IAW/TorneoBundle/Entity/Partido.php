@@ -72,12 +72,31 @@ class Partido
     */
    private $editor;
 
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="descripcion", type="string", length=10000, nullable=true)
+    */
+   private $descripcion;
+
+
+
    public function __construct()
    {
         $this->equipos = new ArrayCollection();
    }
 
+   public function getDescripcion()
+   {
+       return $this->descripcion;
+   }
 
+   public function setDescripcion($descripcion)
+   {
+       $this->descripcion = $descripcion;
+
+       return $this;
+   }
 
 
    public function getEditor()

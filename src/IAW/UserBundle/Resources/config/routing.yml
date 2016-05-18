@@ -3,53 +3,58 @@ iaw_user_homepage:
     defaults: { _controller: IAWUserBundle:Default:index }
 
 iaw_user_index:
-    path: /admin/index
+    path: /admin/user/index
     defaults: { _controller: IAWUserBundle:User:index }
 
 iaw_user_add:
-    path: /admin/add
+    path: /admin/user/add
     defaults: { _controller: IAWUserBundle:User:add }
 
 iaw_user_create:
-    path: /admin/create
+    path: /admin/user/create
     defaults: { _controller: IAWUserBundle:User:create }
     methods:  POST
 
 iaw_user_edit:
-    path: /admin/edit/{id}
+    path: /admin/user/edit/{id}
     defaults: { _controller: IAWUserBundle:User:edit }
 
 iaw_user_update:
-    path: /admin/update/{id}
+    path: /admin/user/update/{id}
     defaults: { _controller: IAWUserBundle:User:update }
     methods: [POST, PUT]
 
 iaw_user_view:
-    path: /admin/view/{id}
+    path: /admin/user/view/{id}
     defaults: { _controller: IAWUserBundle:User:view }
 
 iaw_user_delete:
-    path: /admin/delete/{id}
+    path: /admin/user/delete/{id}
     defaults: { _controller: IAWUserBundle:User:delete }
     methods: [POST, DELETE]
+
+iaw_user_afterLogin:
+    path: /login/after/
+    defaults: { _controller: IAWUserBundle:User:afterLogin }
+    
 
 
 # Si se trata ingresar por url directo a /user/create,
 # luego se redirecciona a /user/add.
 iaw_user_redirect_add:
-    path: /user/create
+    path: /admin/user/create
     defaults:
         _controller: IAWUserBundle:User:add
-        path: /user/add
+        path: /admin/user/add
         permanent: true
 
 # Si se trata ingresar por url directo a /user/update,
 # luego se redirecciona a /user/edit.
 iaw_user_redirect_edit:
-    path: /user/update/{id}
+    path: /admin/user/update/{id}
     defaults:
         _controller: IAWUserBundle:User:edit
-        path: /user/editar/{id}
+        path: /admin/user/edit/{id}
         permanent: true
 
 

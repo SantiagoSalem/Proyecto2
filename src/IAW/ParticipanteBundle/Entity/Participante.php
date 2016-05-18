@@ -47,7 +47,6 @@ class Participante
      * @var int
      *
      * @ORM\Column(name="members", type="integer")
-     * @Assert\NotBlank()
      */
     private $members;
 
@@ -55,7 +54,6 @@ class Participante
      * @var string
      *
      * @ORM\Column(name="image_path", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $imagePath;
 
@@ -69,12 +67,6 @@ class Participante
      *  @ORM\JoinColumn(name="puntaje_id", referencedColumnName="id")
      */
      private $puntaje;
-
-   /**
-    * @ORM\ManyToMany(targetEntity="\IAW\TorneoBundle\Entity\Partido", inversedBy="equipos")
-    * @ORM\JoinTable(name="equipos_partidos")
-    */
-    private $partidos;
 
    public function __construct()
    {
@@ -219,36 +211,5 @@ class Participante
         return $this->puntaje;
     }
 
-    /**
-     * Add partidos
-     *
-     * @param \IAW\ParticipanteBundle\Entity\Partido $partidos
-     * @return Participante
-     */
-    public function addPartido(\IAW\ParticipanteBundle\Entity\Partido $partidos)
-    {
-        $this->partidos[] = $partidos;
-
-        return $this;
-    }
-
-    /**
-     * Remove partidos
-     *
-     * @param \IAW\ParticipanteBundle\Entity\Partido $partidos
-     */
-    public function removePartido(\IAW\ParticipanteBundle\Entity\Partido $partidos)
-    {
-        $this->partidos->removeElement($partidos);
-    }
-
-    /**
-     * Get partidos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPartidos()
-    {
-        return $this->partidos;
-    }
+    
 }

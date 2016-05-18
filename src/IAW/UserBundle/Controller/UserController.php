@@ -9,6 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormError;
 use IAW\UserBundle\Entity\User;
 use IAW\UserBundle\Form\UserType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 
 class UserController extends Controller
 {
@@ -365,6 +367,21 @@ class UserController extends Controller
     /*****************************
     *******Fin editar usuario*****
     *******************************/
+
+    //Dependiendo el rol del usuario es a donde se redirige luego del login.
+    public function afterLoginAction(){
+
+      $router = $this->container->get('router');
+
+      if (($this->container->get('security.context')->isGranted('ROLE_ADMIN'))){
+        return new RedirectResponse($router->generate('iaw_user_index'), 307);
+      }
+      if (($this->container->get('security.context')->isGranted('ROLE_EDITOR'))){
+        return new RedirectResponse($router->generate('iaw_partido_index'), 307);
+      }
+
+
+    }
 
 
     private function createCustomForm($id, $method, $route){

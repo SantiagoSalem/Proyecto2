@@ -3,21 +3,21 @@ iaw_torneo_homepage:
     defaults: { _controller: IAWTorneoBundle:Default:index }
 
 iaw_torneo_index:
-    path: /Fixture/index
+    path: admin/fixture/index
     defaults: { _controller: IAWTorneoBundle:Torneo:index }
 
 iaw_torneo_add:
-    path: /Fixture/add
+    path: admin/fixture/add
     defaults: { _controller: IAWTorneoBundle:Torneo:add }
 
 
 iaw_torneo_create:
-    path: /Fixture/create
+    path: admin/fixture/create
     defaults: { _controller: IAWTorneoBundle:Torneo:create }
     methods: POST
 
 iaw_torneo_eliminar:
-    path: /participante/eliminar/{id}
+    path: admin/participante/eliminar/{id}
     defaults: { _controller: IAWTorneoBundle:Torneo:eliminar }
 
 iaw_torneo_estadisticas:
@@ -25,19 +25,22 @@ iaw_torneo_estadisticas:
     defaults: { _controller: IAWTorneoBundle:Torneo:estadisticas }
 
 iaw_partido_index:
-    path: /editar/partidos/index
+    path: /editor/partidos/index
     defaults: { _controller: IAWTorneoBundle:Partido:index }
 
 iaw_partido_edit:
-    path: /editar/partidos/resultado/{id}
+    path: /editor/partidos/resultado/{id}
     defaults: { _controller: IAWTorneoBundle:Partido:edit }
 
 
 iaw_partido_update:
-    path: /update/partidos/resultado/{id}
+    path: /editor/partidos/resultado/update/{id}
     defaults: { _controller: IAWTorneoBundle:Partido:update }
     methods: [POST, PUT]
 
+iaw_partido_view:
+    path: /partido/view/{id}
+    defaults: { _controller: IAWTorneoBundle:Partido:view }
 
 iaw_partido_verPartidos:
     path: /partidos/

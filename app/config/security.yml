@@ -15,7 +15,7 @@ security:
                 check_path: /login_check
                 login_path: /login
                 provider: fos_userbundle
-                default_target_path: /admin/index
+                default_target_path: /login/after/
             logout:
                 path: /logout
                 target: /login
@@ -35,9 +35,9 @@ security:
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
-    #access_control:
-      #- { path: ^/admin, roles: ROLE_ADMIN }
-      #- { path: ^/editor, roles: ROLE_EDITOR }
+    access_control:
+      - { path: ^/admin, roles: ROLE_ADMIN }
+      - { path: ^/editor, roles: [ROLE_EDITOR, ROLE_ADMIN] }
 
     #Utilizado para encriptar la constraseña del usuario
     encoders:

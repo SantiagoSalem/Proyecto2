@@ -84,7 +84,7 @@ class PartidoController extends Controller
          ELSE 'No es un dia'
     END AS dia, DAY(f.date) as nroDia, pp.imagePath as imagenEL, ppp.imagePath as imagenEV
             FROM IAWTorneoBundle:Partido p, IAWParticipanteBundle:Participante pp, IAWParticipanteBundle:Participante ppp, IAWTorneoBundle:FechaTorneo f
-            WHERE p.equipoLocal = pp.name  AND p.equipoVisitante = ppp.name AND p.golesEquipoLocal IS NULL AND p.editor = '$logInUser' AND IDENTITY(p.fecha) = f.id
+            WHERE p.equipoLocal = pp.name  AND p.equipoVisitante = ppp.name AND p.golesEquipoLocal IS NULL AND p.editor = '$logInUser' AND IDENTITY(p.fecha) = f.id AND f.date <  CURRENT_DATE()
             ORDER BY p.fecha ASC"; //Me tira error al ordenar por fecha...
     }
     //Ejecuto la consulta
@@ -256,8 +256,28 @@ class PartidoController extends Controller
       throw $this->createNotFoundException('Partido no encontrado');
     }
 
+
+
     //Obtengo el formulario procesandolo con el objeto request
     $form = $this->createEditForm($partido);
+
+    //Realizado antes del handleRequest para poder obtener los goles del partido,
+    //para, en el caso de que se modifican los goles del partido, luego se indica correctamente los gf, gc y dg.
+    $equipoLocal = $form->get('equipoLocal')->getData();
+    $equipoVisitante = $form->get('equipoVisitante')->getData();
+
+    $partidoActual = $em->getRepository('IAWTorneoBundle:Partido')->createQueryBuilder('p')
+                  ->where('p.equipoLocal = :equipoLocal')
+                  ->andwhere('p.equipoVisitante = :equipoVisitante')
+                  ->setParameter('equipoLocal',$equipoLocal)
+                  ->setParameter('equipoVisitante',$equipoVisitante)
+                  ->getQuery()
+                  ->getResult();
+
+    $golesEquipoLocalAntes = $partidoActual[0]->getGolesEquipoLocal();
+    $golesEquipoVisitanteAntes = $partidoActual[0]->getGolesEquipoVisitante();
+
+
     $form->handleRequest($request);
 
     if($form->isSubmitted() && $form->isValid()){
@@ -365,17 +385,6 @@ class PartidoController extends Controller
             }
             else{
 
-                $partidoActual = $em->getRepository('IAWTorneoBundle:Partido')->createQueryBuilder('p')
-                              ->where('p.equipoLocal = :equipoLocal')
-                              ->andwhere('p.equipoVisitante = :equipoVisitante')
-                              ->setParameter('equipoLocal',$equipoLocal)
-                              ->setParameter('equipoVisitante',$equipoVisitante)
-                              ->getQuery()
-                              ->getResult();
-
-                $golesEquipoLocalAntes = $partidoActual[0]->getGolesEquipoLocal();
-                $golesEquipoVisitanteAntes = $partidoActual[0]->getGolesEquipoVisitante();
-
                 //Tengo que corregir gfL, gcL y gdL
                 $gfL = $puntajeLocal[0]->getGf();
                 $gcL = $puntajeLocal[0]->getGc();
@@ -420,6 +429,31 @@ class PartidoController extends Controller
     $cantTorneo = $em->createQuery($dql)->getResult();
     //En caso de algun problema, renderizo el formulario
     return $this->render('IAWTorneoBundle:Partido:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'partido' => $partido, 'form' => $form->createView()));
+  }
+
+  public function viewAction($id){
+
+    $em = $this->getDoctrine()->getManager();
+
+    $dql = "SELECT p.equipoLocal, p.equipoVisitante, p.golesEquipoLocal, p.golesEquipoVisitante, p.descripcion, el.imagePath as escudoLocal, ev.imagePath as escudoVisitante
+                     FROM IAWTorneoBundle:Partido p, IAWParticipanteBundle:Participante el, IAWParticipanteBundle:Participante ev
+                     WHERE p.id = '$id' AND p.equipoLocal = el.name AND p.equipoVisitante = ev.name";
+
+    //Obtengo el participante con el id indicado
+    $partidos = $em->createQuery($dql)->getResult();
+
+
+    //Verifico si existe el participante con el id indicado
+    if(!$partidos[0]){
+      throw $this->createNotFoundException('Partido no encontrado');
+    }
+    $em = $this->getDoctrine()->getManager();
+    $logInUser = $this->get('security.token_storage')->getToken()->getUser();
+    $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+    $cantTorneo = $em->createQuery($dql)->getResult();
+
+    return $this->render('IAWTorneoBundle:Partido:view.html.twig',array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo, 'partido' => $partidos[0]));
+
   }
 
 

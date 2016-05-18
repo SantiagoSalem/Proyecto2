@@ -33,7 +33,11 @@ class ProfileController extends ContainerAware
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'.$this->container->getParameter('fos_user.template.engine'), array('logInUser' => $logInUser));
+        $em = $this->getDoctrine()->getManager();
+        $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
+        $cantTorneo = $em->createQuery($dql)->getResult();
+
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'.$this->container->getParameter('fos_user.template.engine'), array('logInUser' => $logInUser, 'cantTorneo' => $cantTorneo));
     }
 
     /**
@@ -61,6 +65,11 @@ class ProfileController extends ContainerAware
             array('form' => $form->createView())
         );
     }
+
+    public function getDoctrine()
+{
+    return $this->container->get('doctrine');
+}
 
     /**
      * Generate the redirection url when editing is completed.

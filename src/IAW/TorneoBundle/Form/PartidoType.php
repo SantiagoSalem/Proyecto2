@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 
 
 
@@ -53,6 +55,7 @@ class PartidoType extends AbstractType
             ->add('golesEquipoLocal')
             ->add('equipoVisitante')
             ->add('golesEquipoVisitante')
+            ->add('descripcion', TextareaType::class)
             ->add('editor', 'choice', array('choices' => $arrNombres))
             ->add('save', 'submit', array('label' => 'Guardar Resultado'))
         ;
@@ -63,6 +66,7 @@ class PartidoType extends AbstractType
             ->add('golesEquipoLocal',IntegerType::class, array('constraints' => new NotBlank()))
             ->add('equipoVisitante', 'hidden' ,array('label' => false))
             ->add('golesEquipoVisitante',IntegerType::class, array('constraints' => new NotBlank()))
+            ->add('descripcion', TextareaType::class)
             ->add('save', 'submit', array('label' => 'Guardar Resultado'))
         ;
       }

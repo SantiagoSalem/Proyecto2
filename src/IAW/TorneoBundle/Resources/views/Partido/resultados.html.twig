@@ -75,13 +75,16 @@
                         {{partido.equipoVisitante}}
                       </td>
 
-                      {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
                       <td class="actions">
+                        <a href="{{ path('iaw_partido_view', {id: partido.id}) }}" class="btn btn-sm btn-info">
+                          Ver
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
                         <a href="{{ path('iaw_partido_edit', {id: partido.id}) }}" class="btn btn-sm btn-info">
                           Editar
                         </a>
+                        {% endif %}
                       </td>
-                      {% endif %}
 
                       {% if loop.last %}
                         {# Cierro el tag de la ultima tabla#}
@@ -93,6 +96,9 @@
 
                   </tr>
               {% endfor %}
+              {% if partidos is empty %}
+                <h3> No se ha cargado ningún resultado todavía. Consulte de nuevo más tarde.</h3>
+              {% endif %}
 
       </div>
     </div>

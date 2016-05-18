@@ -72,7 +72,7 @@ class ParticipanteController extends Controller
               * generar ruta participante/create
               * metodo POST
       */
-      $form = $this->createForm(new ParticipanteType(), $entidad, array(
+      $form = $this->createForm(new ParticipanteType("creacion"), $entidad, array(
           'action' => $this->generateUrl('iaw_participante_create'),
           'method' => 'POST'
       ));
@@ -91,14 +91,21 @@ class ParticipanteController extends Controller
 
         //Obtengo la imagen que se ingreso en el formulario
         $file = $form["imagePath"]->getData();
-        //Obtengo la extension de la imagen
-        $ext = $file->guessExtension();
-        //Nombre que va a recibir el archivo
-        $file_name = time().".".$ext;
-        //Guardo la imagen en uploads/
-        $file->move("uploads",$file_name);
+        if($file != NULL){
+          //Obtengo la extension de la imagen
+          $ext = $file->guessExtension();
+          //Nombre que va a recibir el archivo
+          $file_name = time().".".$ext;
+          //Guardo la imagen en uploads/
+          $file->move("uploads",$file_name);
 
-        $participante->setImagePath($file_name);
+          $participante->setImagePath($file_name);
+        }
+        else{
+          $participante->setImagePath("noImage.png");
+        }
+
+        $participante->setMembers(0);
 
         //Guardo en la base de datos
         $em = $this->getDoctrine()->getManager();
@@ -189,7 +196,7 @@ class ParticipanteController extends Controller
         //Verifico si se trata de una llamada ajax
         if($request->isXMLHttpRequest()){
           $file_name = $participante->getImagePath();
-          if($file_name != ""){
+          if($file_name != "noImage.png"){
             //Borro la imagen del equipo (escudo) de la carpeta uploads/
             $file_path = 'uploads'."/".$file_name;
             unlink($file_path);
@@ -255,7 +262,7 @@ class ParticipanteController extends Controller
               * generar ruta participante/update/{id}
               * metodo PUT
       */
-      $form = $this->createForm(new ParticipanteType(), $entidad, array(
+      $form = $this->createForm(new ParticipanteType("edicion"), $entidad, array(
             'action' => $this->generateUrl('iaw_participante_update', array('id' => $entidad->getId())),
             'method' => 'PUT'));
       return $form;
@@ -291,7 +298,7 @@ class ParticipanteController extends Controller
       $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
       $cantTorneo = $em->createQuery($dql)->getResult();
       //En caso de algun problema, renderizo el formulario
-      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'participante', 'form' => $form->createView()));
+      return $this->render('IAWParticipanteBundle:Participante:edit.html.twig', array('logInUser' => $logInUser,'cantTorneo' => $cantTorneo,'participante' => $participante, 'form' => $form->createView()));
     }
 
     /*****************************

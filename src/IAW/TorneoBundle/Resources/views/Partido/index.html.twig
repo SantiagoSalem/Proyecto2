@@ -102,6 +102,9 @@
 
 
               {% endfor %}
+              {% if partidos is empty %}
+                <h3>No tienes ningun partido pendiente de edición</h3>
+              {% endif %}
 
       </div>
     </div>
