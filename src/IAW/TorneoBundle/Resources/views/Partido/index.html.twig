@@ -48,12 +48,12 @@
                     {% endif %}
 
 
-                    <td style="text-align: left;">
+                    <td  id="fechaPartido" style="text-align:left;">
                       {{partido.dia ~ ' ' ~ partido.nroDia ~ ' de ' ~ partido.mes}}
                     </td>
 
 
-                      <td style="text-align: right;">{{partido.equipoLocal}}
+                      <td id="equipoLocal" style="text-align: right;">{{partido.equipoLocal}}
                        {% if partido.imagenEL != '' %}
                             <img src="{{ asset('uploads/' ~ partido.imagenEL) }}" style="width:30px;height:30px;" />
                         {% else %}
@@ -103,7 +103,11 @@
 
               {% endfor %}
               {% if partidos is empty %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')  %}
                 <h3>No tienes ningun partido pendiente de edición</h3>
+                {% elseif is_granted('IS_AUTHENTICATED_ANONYMOUSLY')  %}
+                <h3>No se ha cargado el fixture</h3>
+                {% endif %}
               {% endif %}
 
       </div>

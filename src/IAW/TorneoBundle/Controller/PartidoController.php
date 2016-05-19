@@ -283,8 +283,8 @@ class PartidoController extends Controller
     if($form->isSubmitted() && $form->isValid()){
 
 
-      $equipoLocal = $form->get('equipoLocal')->getData();
-      $equipoVisitante = $form->get('equipoVisitante')->getData();
+      //$equipoLocal = $form->get('equipoLocal')->getData();
+      //$equipoVisitante = $form->get('equipoVisitante')->getData();
       $golesEquipoLocal = $form->get('golesEquipoLocal')->getData();
       $golesEquipoVisitante = $form->get('golesEquipoVisitante')->getData();
 

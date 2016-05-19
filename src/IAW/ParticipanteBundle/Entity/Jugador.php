@@ -3,6 +3,7 @@
 namespace IAW\ParticipanteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Jugador
@@ -25,6 +26,7 @@ class Jugador
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -32,6 +34,7 @@ class Jugador
      * @var string
      *
      * @ORM\Column(name="apellido", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $apellido;
 
@@ -39,6 +42,7 @@ class Jugador
      * @var string
      *
      * @ORM\Column(name="imagen", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $imagen;
 

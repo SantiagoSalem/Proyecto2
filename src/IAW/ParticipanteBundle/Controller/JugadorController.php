@@ -138,6 +138,7 @@ class JugadorController extends Controller
 
         return $this->redirectToRoute('iaw_participante_index');
       }
+      $em = $this->getDoctrine()->getManager();
       $logInUser = $this->get('security.token_storage')->getToken()->getUser();
       $dql = "SELECT COUNT(t.id) as nro FROM IAWTorneoBundle:Torneo t";
       $cantTorneo = $em->createQuery($dql)->getResult();
