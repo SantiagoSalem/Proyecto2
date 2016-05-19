@@ -301,8 +301,6 @@ class PartidoController extends Controller
 
 
 
-      if($golesEquipoLocal != NULL && $golesEquipoVisitante != NULL ) {
-
           if($this->get('security.authorization_checker')->isGranted('ROLE_EDITOR') === true){
               //Datos local
               $puntosL = $puntajeLocal[0]->getPuntos();
@@ -414,7 +412,7 @@ class PartidoController extends Controller
                 //Modifico df del visitante
                 $puntajeVisitante[0]->setDg($gfV - $gcV);
               }
-      }
+
 
       //Guardo en la base de datos
       $em->flush();
